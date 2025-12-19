@@ -1,0 +1,305 @@
+import { useState } from 'react';
+import { useAppData } from '../hooks/useAppData';
+import { PriceData } from '../types';
+import { generateId, getCurrentDate, formatDate } from '../utils/helpers';
+import { calculateGSR, formatCurrency } from '../utils/calculations';
+import { TrendingUp, Plus, Edit2, Trash2 } from 'lucide-react';
+
+interface PriceDataEntryProps extends ReturnType<typeof useAppData> {}
+
+export default function PriceDataEntry({
+  data,
+  addPriceData,
+  updatePriceData,
+  deletePriceData,
+}: PriceDataEntryProps) {
+  const [formData, setFormData] = useState({
+    date: getCurrentDate(),
+    goldPrice: '',
+    silverPrice: '',
+    platinumPrice: '',
+    goldRSI: '',
+    silverRSI: '',
+    platinumRSI: '',
+    vix: '',
+  });
+
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const priceData: PriceData = {
+      id: editingId || generateId(),
+      date: formData.date,
+      goldPrice: parseFloat(formData.goldPrice),
+      silverPrice: parseFloat(formData.silverPrice),
+      platinumPrice: parseFloat(formData.platinumPrice),
+      goldRSI: parseFloat(formData.goldRSI),
+      silverRSI: parseFloat(formData.silverRSI),
+      platinumRSI: parseFloat(formData.platinumRSI),
+      vix: formData.vix ? parseFloat(formData.vix) : undefined,
+    };
+
+    if (editingId) {
+      updatePriceData(editingId, priceData);
+      setEditingId(null);
+    } else {
+      addPriceData(priceData);
+    }
+
+    // Reset form
+    setFormData({
+      date: getCurrentDate(),
+      goldPrice: '',
+      silverPrice: '',
+      platinumPrice: '',
+      goldRSI: '',
+      silverRSI: '',
+      platinumRSI: '',
+      vix: '',
+    });
+  };
+
+  const handleEdit = (price: PriceData) => {
+    setFormData({
+      date: price.date,
+      goldPrice: price.goldPrice.toString(),
+      silverPrice: price.silverPrice.toString(),
+      platinumPrice: price.platinumPrice.toString(),
+      goldRSI: price.goldRSI.toString(),
+      silverRSI: price.silverRSI.toString(),
+      platinumRSI: price.platinumRSI.toString(),
+      vix: price.vix?.toString() || '',
+    });
+    setEditingId(price.id);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Price & Market Data</h2>
+        <p className="text-gray-600">Track daily prices and technical indicators for precious metals.</p>
+      </div>
+
+      {/* Entry Form */}
+      <div className="card">
+        <h3 className="text-lg font-semibold mb-4">
+          {editingId ? 'Edit Price Data' : 'Add New Price Data'}
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="label">Date</label>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={e => setFormData({ ...formData, date: e.target.value })}
+                required
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Gold Price (¥/g)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.goldPrice}
+                onChange={e => setFormData({ ...formData, goldPrice: e.target.value })}
+                required
+                placeholder="500.00"
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Silver Price (¥/g)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.silverPrice}
+                onChange={e => setFormData({ ...formData, silverPrice: e.target.value })}
+                required
+                placeholder="6.50"
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Platinum Price (¥/g)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.platinumPrice}
+                onChange={e => setFormData({ ...formData, platinumPrice: e.target.value })}
+                required
+                placeholder="220.00"
+                className="input"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="label">Gold RSI</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                value={formData.goldRSI}
+                onChange={e => setFormData({ ...formData, goldRSI: e.target.value })}
+                required
+                placeholder="50.00"
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Silver RSI</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                value={formData.silverRSI}
+                onChange={e => setFormData({ ...formData, silverRSI: e.target.value })}
+                required
+                placeholder="50.00"
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">Platinum RSI</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                value={formData.platinumRSI}
+                onChange={e => setFormData({ ...formData, platinumRSI: e.target.value })}
+                required
+                placeholder="50.00"
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="label">VIX (Optional)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.vix}
+                onChange={e => setFormData({ ...formData, vix: e.target.value })}
+                placeholder="20.00"
+                className="input"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button type="submit" className="btn btn-primary">
+              <Plus className="w-4 h-4 inline mr-2" />
+              {editingId ? 'Update' : 'Add'} Price Data
+            </button>
+            {editingId && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingId(null);
+                  setFormData({
+                    date: getCurrentDate(),
+                    goldPrice: '',
+                    silverPrice: '',
+                    platinumPrice: '',
+                    goldRSI: '',
+                    silverRSI: '',
+                    platinumRSI: '',
+                    vix: '',
+                  });
+                }}
+                className="btn btn-secondary"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+
+      {/* Price History Table */}
+      <div className="card">
+        <h3 className="text-lg font-semibold mb-4">Price History ({data.priceData.length} entries)</h3>
+        {data.priceData.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Gold (¥/g)</th>
+                  <th>Silver (¥/g)</th>
+                  <th>Platinum (¥/g)</th>
+                  <th>Gold RSI</th>
+                  <th>Silver RSI</th>
+                  <th>Platinum RSI</th>
+                  <th>GSR</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.priceData.slice().reverse().slice(0, 30).map(price => {
+                  const gsr = calculateGSR(price.goldPrice, price.silverPrice);
+                  return (
+                    <tr key={price.id}>
+                      <td>{formatDate(price.date)}</td>
+                      <td>{formatCurrency(price.goldPrice)}</td>
+                      <td>{formatCurrency(price.silverPrice)}</td>
+                      <td>{formatCurrency(price.platinumPrice)}</td>
+                      <td>
+                        <span className={`badge ${price.goldRSI > 70 ? 'badge-danger' : price.goldRSI < 30 ? 'badge-success' : 'badge-info'}`}>
+                          {price.goldRSI.toFixed(1)}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`badge ${price.silverRSI > 70 ? 'badge-danger' : price.silverRSI < 30 ? 'badge-success' : 'badge-info'}`}>
+                          {price.silverRSI.toFixed(1)}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`badge ${price.platinumRSI > 70 ? 'badge-danger' : price.platinumRSI < 30 ? 'badge-success' : 'badge-info'}`}>
+                          {price.platinumRSI.toFixed(1)}
+                        </span>
+                      </td>
+                      <td>{gsr.toFixed(2)}</td>
+                      <td>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEdit(price)}
+                            className="text-primary-600 hover:text-primary-800"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (confirm('Delete this price data?')) {
+                                deletePriceData(price.id);
+                              }
+                            }}
+                            className="text-danger-600 hover:text-danger-800"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500">
+            <TrendingUp className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+            <p>No price data yet. Add your first entry to get started.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
