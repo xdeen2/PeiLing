@@ -26,6 +26,11 @@ interface DeepSeekResponse {
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const DEFAULT_MODEL = 'deepseek-chat';
 
+// CORS proxy for development (bypasses CORS restrictions in browser)
+// Note: For production, use a backend proxy instead
+const CORS_PROXY = 'https://corsproxy.io/?';
+const USE_CORS_PROXY = true; // Set to false when using backend proxy
+
 /**
  * Get DeepSeek API key from localStorage
  */
@@ -55,7 +60,12 @@ async function callDeepSeek(
   };
 
   try {
-    const response = await fetch(DEEPSEEK_API_URL, {
+    // Use CORS proxy for development to bypass browser CORS restrictions
+    const apiUrl = USE_CORS_PROXY
+      ? `${CORS_PROXY}${encodeURIComponent(DEEPSEEK_API_URL)}`
+      : DEEPSEEK_API_URL;
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
