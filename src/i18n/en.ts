@@ -15,6 +15,7 @@ export const en = {
     rebalancing: 'Rebalancing',
     reports: 'Reports',
     alerts: 'Alerts',
+    apiKeys: 'API Keys',
     settings: 'Settings',
     data: 'Data Management',
     help: 'Help',
@@ -159,6 +160,29 @@ export const en = {
     gsr: 'GSR',
     deleteConfirm: 'Delete this price data?',
     noDataYet: 'No price data yet. Add your first entry to get started.',
+  },
+
+  // API Keys
+  apiKeys: {
+    title: 'API Key Management',
+    subtitle: 'Configure your API keys to enable automatic price fetching',
+    whyNeeded: 'Why do I need API keys?',
+    explanation: 'API keys allow the application to automatically fetch real-time precious metals prices in CNY. Without them, you\'ll need to enter prices manually.',
+    recommended: 'Recommended',
+    backup: 'Backup',
+    metalpriceDesc: 'Free tier with real-time updates and CNY support',
+    metalsDesc: 'Free tier with daily updates, used as fallback',
+    getKey: 'Get Key',
+    apiKey: 'API Key',
+    keyConfigured: 'Key configured',
+    saveSuccess: 'API keys saved successfully!',
+    clearConfirm: 'Are you sure you want to clear all API keys?',
+    securityNote: 'Your API keys are stored securely in your browser\'s local storage',
+    howToTitle: 'How to Get Your API Keys',
+    step1: 'Visit',
+    step2: 'Click "Get Free API Key" and sign up',
+    step3: 'Copy your API key from the dashboard',
+    step4: 'Paste it in the field above and click Save',
   },
 };
 
