@@ -1,9 +1,11 @@
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import { storage } from '../utils/storage';
 import { downloadFile } from '../utils/helpers';
 import { Download, Upload, Trash2 } from 'lucide-react';
 
 export default function DataManagement({ data, importData, resetData }: ReturnType<typeof useAppData>) {
+  const { t } = useLanguage();
   const handleExportJSON = () => {
     const jsonData = storage.export();
     downloadFile(jsonData, `peiling-backup-${new Date().toISOString().split('T')[0]}.json`, 'application/json');
@@ -26,9 +28,9 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
       reader.onload = (event) => {
         const jsonString = event.target?.result as string;
         if (importData(jsonString)) {
-          alert('Data imported successfully!');
+          alert(t.dataManagement.importSuccess);
         } else {
-          alert('Failed to import data. Please check the file format.');
+          alert(t.dataManagement.importFailed);
         }
       };
       reader.readAsText(file);
@@ -37,10 +39,10 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
   };
 
   const handleReset = () => {
-    if (confirm('Are you sure you want to reset all data? This action cannot be undone!')) {
-      if (confirm('This will delete ALL your data. Are you absolutely sure?')) {
+    if (confirm(t.dataManagement.resetConfirm)) {
+      if (confirm(t.dataManagement.resetConfirm2)) {
         resetData();
-        alert('All data has been reset.');
+        alert(t.dataManagement.resetSuccess);
       }
     }
   };
@@ -48,17 +50,17 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Data Management</h2>
-        <p className="text-gray-600">Export, import, and manage your investment data.</p>
+        <h2 className="text-2xl font-bold mb-4">{ t.dataManagement.title}</h2>
+        <p className="text-gray-600">{t.dataManagement.subtitle}</p>
       </div>
 
       {/* Data Statistics */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Data Statistics</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.dataManagement.dataStatistics}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-3xl font-bold text-primary-600">{data.priceData.length}</p>
-            <p className="text-sm text-gray-600 mt-1">Price Data Points</p>
+            <p className="text-sm text-gray-600 mt-1">{ t.dataManagement.priceDataPoints}</p>
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-3xl font-bold text-primary-600">{data.transactions.length}</p>
@@ -66,21 +68,21 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-3xl font-bold text-primary-600">{data.limitOrders.length}</p>
-            <p className="text-sm text-gray-600 mt-1">Limit Orders</p>
+            <p className="text-sm text-gray-600 mt-1">{ t.dataManagement.limitOrders}</p>
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-3xl font-bold text-primary-600">{data.alerts.length}</p>
-            <p className="text-sm text-gray-600 mt-1">Alerts</p>
+            <p className="text-sm text-gray-600 mt-1">{ t.alerts.title}</p>
           </div>
         </div>
       </div>
 
       {/* Export Data */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Export Data</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.dataManagement.exportData}</h3>
         <div className="space-y-4">
           <div>
-            <h4 className="font-medium mb-2">Full Backup (JSON)</h4>
+            <h4 className="font-medium mb-2">{ t.dataManagement.fullBackup}</h4>
             <p className="text-sm text-gray-600 mb-3">
               Export all your data including settings, transactions, prices, and reports.
             </p>
@@ -91,7 +93,7 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
           </div>
 
           <div className="border-t pt-4">
-            <h4 className="font-medium mb-2">CSV Exports</h4>
+            <h4 className="font-medium mb-2">{ t.dataManagement.csvExports}</h4>
             <p className="text-sm text-gray-600 mb-3">
               Export specific data types as CSV for use in spreadsheets.
             </p>
@@ -112,7 +114,7 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
 
       {/* Import Data */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Import Data</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.dataManagement.importData}</h3>
         <p className="text-sm text-gray-600 mb-3">
           Import a previously exported JSON backup file. This will replace all current data.
         </p>
@@ -124,7 +126,7 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
 
       {/* Danger Zone */}
       <div className="card border-2 border-danger-500 bg-danger-50">
-        <h3 className="text-lg font-semibold mb-4 text-danger-900">Danger Zone</h3>
+        <h3 className="text-lg font-semibold mb-4 text-danger-900">{ t.dataManagement.dangerZone}</h3>
         <p className="text-sm text-danger-800 mb-3">
           Warning: This action will permanently delete all your data and cannot be undone.
         </p>

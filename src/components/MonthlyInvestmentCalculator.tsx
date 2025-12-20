@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import {
   calculateHoldings,
   calculateMonthlyInvestment,
@@ -15,6 +16,7 @@ interface MonthlyInvestmentCalculatorProps extends ReturnType<typeof useAppData>
 export default function MonthlyInvestmentCalculator({
   data,
 }: MonthlyInvestmentCalculatorProps) {
+  const { t } = useLanguage();
   const [selectedDate, setSelectedDate] = useState(getCurrentDate());
 
   const holdings = useMemo(() => calculateHoldings(data.transactions), [data.transactions]);
@@ -29,25 +31,25 @@ export default function MonthlyInvestmentCalculator({
 
   const getRSIRecommendation = (rsi: number): { text: string; color: string; multiplier: number } => {
     if (rsi > data.config.rsiThresholds.pause) {
-      return { text: 'Pause - RSI too high', color: 'text-danger-600', multiplier: 0 };
+      return { text: t.calculator.rsiPause, color: 'text-danger-600', multiplier: 0 };
     }
     if (rsi > data.config.rsiThresholds.reduce) {
-      return { text: 'Reduce - 50% allocation', color: 'text-warning-600', multiplier: 0.5 };
+      return { text: t.calculator.rsiReduce, color: 'text-warning-600', multiplier: 0.5 };
     }
     if (rsi >= data.config.rsiThresholds.normal) {
-      return { text: 'Normal - 100% allocation', color: 'text-success-600', multiplier: 1 };
+      return { text: t.calculator.rsiNormal, color: 'text-success-600', multiplier: 1 };
     }
-    return { text: 'Aggressive - 150% allocation', color: 'text-primary-600', multiplier: 1.5 };
+    return { text: t.calculator.rsiAggressive, color: 'text-primary-600', multiplier: 1.5 };
   };
 
   const getGSRRecommendation = (): { text: string; color: string } => {
     if (gsr > data.config.gsrParameters.silverCheap) {
-      return { text: 'Silver is undervalued - Increase silver allocation', color: 'text-primary-600' };
+      return { text: t.calculator.gsrSilverCheap, color: 'text-primary-600' };
     }
     if (gsr < data.config.gsrParameters.goldCheap) {
-      return { text: 'Gold is undervalued - Increase gold allocation', color: 'text-warning-600' };
+      return { text: t.calculator.gsrGoldCheap, color: 'text-warning-600' };
     }
-    return { text: 'GSR in normal range', color: 'text-success-600' };
+    return { text: t.calculator.gsrNormal, color: 'text-success-600' };
   };
 
   if (!latestPrice) {

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import { Metal, LimitOrder } from '../types';
 import { generateLimitOrders, formatCurrency, formatGrams } from '../utils/calculations';
 import { generateId, getCurrentDate, getMetalName } from '../utils/helpers';
@@ -12,6 +13,7 @@ export default function LimitOrderGenerator({
   addLimitOrder,
   updateLimitOrder,
 }: LimitOrderGeneratorProps) {
+  const { t } = useLanguage();
   const [selectedMetal, setSelectedMetal] = useState<Metal>('gold');
   const [allocationAmount, setAllocationAmount] = useState<string>('');
   const [currentPrice, setCurrentPrice] = useState<string>('');
@@ -179,7 +181,7 @@ export default function LimitOrderGenerator({
                       <div className="flex gap-2">
                         <button
                           onClick={() => {
-                            const price = prompt('Enter filled price (¥/g):');
+                            const price = prompt(t.limitOrders.enterFilledPrice);
                             if (price) handleMarkFilled(order.id, price);
                           }}
                           className="btn btn-sm btn-success"
