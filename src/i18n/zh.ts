@@ -494,4 +494,73 @@ export const zh: TranslationKeys = {
     memberSince: '注册时间：',
     signOut: '退出您的账户',
   },
+
+  // AI Features - AI功能
+  ai: {
+    insights: 'AI 智能分析',
+    poweredBy: '由 DeepSeek AI 提供支持',
+    refresh: '刷新 AI 分析',
+    refreshing: 'AI 正在分析您的投资组合...',
+    pleaseWait: '这可能需要几分钟',
+    error: 'AI 分析错误',
+    noKey: 'AI 功能可用',
+    noKeyMessage: '添加您的 DeepSeek API 密钥以解锁强大的 AI 驱动洞察，包括市场情绪分析、投资建议和投资组合风险评估。',
+    configure: '配置 AI 功能',
+
+    // Market Sentiment - 市场情绪
+    marketSentiment: '市场情绪分析',
+    sentiment: '情绪',
+    confidence: '置信度',
+    bullish: '看涨',
+    bearish: '看跌',
+    neutral: '中性',
+    recommendations: 'AI 建议',
+
+    // Investment Recommendations - 投资建议
+    investmentRec: 'AI 投资建议',
+    risk: '风险',
+    riskLow: '低',
+    riskMedium: '中',
+    riskHigh: '高',
+    suggestedAllocation: '建议配置',
+    reasoning: '理由',
+
+    // Risk Assessment - 风险评估
+    riskAssessment: '投资组合风险评估',
+    riskScore: '风险评分',
+    riskLevel: '风险级别',
+    riskLevelLow: '低风险',
+    riskLevelModerate: '中等风险',
+    riskLevelHigh: '高风险',
+    riskLevelVeryHigh: '极高风险',
+    riskFactors: '风险因素',
+    mitigation: '缓解策略',
+
+    // Entry Point Predictions - 入场点预测
+    entryPredictions: 'AI 入场点预测',
+    optimalBuying: '由 DeepSeek AI 提供的最佳购买机会',
+    analyzing: 'AI 正在分析最佳入场点...',
+    recommendation: '建议',
+    buyNow: '立即买入',
+    wait: '等待',
+    targetPrice: '目标价格',
+    timeframe: '时间框架',
+
+    // RSI Calculation - RSI 计算
+    calculateRSI: 'AI 计算 RSI',
+    calculating: '计算中...',
+    rsiCalculated: 'RSI 值计算成功',
+    rsiError: '计算 RSI 失败。请检查您的 API 密钥并重试。',
+    rsiNeedData: '需要至少14天的历史价格数据才能计算 RSI。',
+    rsiNeedPrices: '请先输入所有金属价格',
+
+    // Features List - 功能列表
+    features: 'AI 功能',
+    feature1: '从价格历史自动计算 RSI',
+    feature2: '市场情绪分析与预测',
+    feature3: '个性化投资建议',
+    feature4: '投资组合风险评估',
+    feature5: '交易模式分析',
+    feature6: 'AI 预测帮助识别基于价格趋势和技术分析的最佳入场点',
+  },
 };

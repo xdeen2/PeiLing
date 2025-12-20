@@ -171,12 +171,15 @@ export async function fetchCurrentPrices(): Promise<PriceData> {
 /**
  * Save API keys to localStorage
  */
-export function saveApiKeys(metalpriceKey?: string, metalsKey?: string) {
-  if (metalpriceKey) {
+export function saveApiKeys(metalpriceKey?: string, metalsKey?: string, deepseekKey?: string) {
+  if (metalpriceKey !== undefined) {
     localStorage.setItem('metalprice_api_key', metalpriceKey);
   }
-  if (metalsKey) {
+  if (metalsKey !== undefined) {
     localStorage.setItem('metals_api_key', metalsKey);
+  }
+  if (deepseekKey !== undefined) {
+    localStorage.setItem('deepseek_api_key', deepseekKey);
   }
 }
 
@@ -187,6 +190,7 @@ export function getApiKeys() {
   return {
     metalpriceApiKey: localStorage.getItem('metalprice_api_key') || '',
     metalsApiKey: localStorage.getItem('metals_api_key') || '',
+    deepseekApiKey: localStorage.getItem('deepseek_api_key') || '',
   };
 }
 
@@ -196,4 +200,5 @@ export function getApiKeys() {
 export function clearApiKeys() {
   localStorage.removeItem('metalprice_api_key');
   localStorage.removeItem('metals_api_key');
+  localStorage.removeItem('deepseek_api_key');
 }

@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAIAnalysis } from '../hooks/useAIAnalysis';
 import { PriceData } from '../types';
 import { generateId, getCurrentDate, formatDate } from '../utils/helpers';
 import { calculateGSR, formatCurrency } from '../utils/calculations';
-import { TrendingUp, Plus, Edit2, Trash2 } from 'lucide-react';
+import { TrendingUp, Plus, Edit2, Trash2, Brain, Sparkles } from 'lucide-react';
 import AutoPriceFetcher from './AutoPriceFetcher';
+import { getApiKeys } from '../services/priceService';
 
 interface PriceDataEntryProps extends ReturnType<typeof useAppData> {}
 
@@ -28,6 +30,57 @@ export default function PriceDataEntry({
   });
 
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  // AI Analysis
+  const aiAnalysis = useAIAnalysis(data);
+  const [hasDeepSeekKey, setHasDeepSeekKey] = useState(false);
+  const [calculatingRSI, setCalculatingRSI] = useState(false);
+
+  // Check if DeepSeek API key is configured
+  useEffect(() => {
+    const keys = getApiKeys();
+    setHasDeepSeekKey(!!keys.deepseekApiKey);
+  }, []);
+
+  // Auto-calculate RSI using AI when prices are entered
+  const handleCalculateRSI = async () => {
+    if (!formData.goldPrice || !formData.silverPrice || !formData.platinumPrice) {
+      alert('Please enter all metal prices first');
+      return;
+    }
+
+    if (data.priceData.length < 14) {
+      alert('Need at least 14 days of historical price data to calculate RSI. Please enter RSI values manually for now.');
+      return;
+    }
+
+    setCalculatingRSI(true);
+
+    try {
+      // Get recent price history and append current prices
+      const goldPrices = [...data.priceData.map(p => p.goldPrice), parseFloat(formData.goldPrice)];
+      const silverPrices = [...data.priceData.map(p => p.silverPrice), parseFloat(formData.silverPrice)];
+      const platinumPrices = [...data.priceData.map(p => p.platinumPrice || 0), parseFloat(formData.platinumPrice)];
+
+      const [goldRSI, silverRSI, platinumRSI] = await Promise.all([
+        aiAnalysis.calculateRSI(goldPrices),
+        aiAnalysis.calculateRSI(silverPrices),
+        aiAnalysis.calculateRSI(platinumPrices),
+      ]);
+
+      setFormData(prev => ({
+        ...prev,
+        goldRSI: goldRSI?.toFixed(2) || '',
+        silverRSI: silverRSI?.toFixed(2) || '',
+        platinumRSI: platinumRSI?.toFixed(2) || '',
+      }));
+    } catch (error) {
+      console.error('Failed to calculate RSI:', error);
+      alert('Failed to calculate RSI. Please check your API key and try again.');
+    } finally {
+      setCalculatingRSI(false);
+    }
+  };
 
   const handlePricesFetched = (goldPrice: number, silverPrice: number) => {
     // Only update if form is empty (not editing)
@@ -167,59 +220,85 @@ export default function PriceDataEntry({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label className="label">{t.priceData.goldRSI}</label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                max="100"
-                value={formData.goldRSI}
-                onChange={e => setFormData({ ...formData, goldRSI: e.target.value })}
-                required
-                placeholder="50.00"
-                className="input"
-              />
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="label mb-0">RSI Values (0-100)</label>
+              {hasDeepSeekKey && (
+                <button
+                  type="button"
+                  onClick={handleCalculateRSI}
+                  disabled={calculatingRSI || !formData.goldPrice || !formData.silverPrice || !formData.platinumPrice}
+                  className="flex items-center gap-1 px-3 py-1 text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {calculatingRSI ? (
+                    <>
+                      <Sparkles className="w-3 h-3 animate-pulse" />
+                      <span>Calculating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Brain className="w-3 h-3" />
+                      <span>AI Calculate RSI</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
-            <div>
-              <label className="label">{t.priceData.silverRSI}</label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                max="100"
-                value={formData.silverRSI}
-                onChange={e => setFormData({ ...formData, silverRSI: e.target.value })}
-                required
-                placeholder="50.00"
-                className="input"
-              />
-            </div>
-            <div>
-              <label className="label">{t.priceData.platinumRSI}</label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                max="100"
-                value={formData.platinumRSI}
-                onChange={e => setFormData({ ...formData, platinumRSI: e.target.value })}
-                required
-                placeholder="50.00"
-                className="input"
-              />
-            </div>
-            <div>
-              <label className="label">{t.priceData.vix}</label>
-              <input
-                type="number"
-                step="0.01"
-                value={formData.vix}
-                onChange={e => setFormData({ ...formData, vix: e.target.value })}
-                placeholder="20.00"
-                className="input"
-              />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label className="label text-xs">{t.priceData.goldRSI}</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max="100"
+                  value={formData.goldRSI}
+                  onChange={e => setFormData({ ...formData, goldRSI: e.target.value })}
+                  required
+                  placeholder="50.00"
+                  className="input"
+                />
+              </div>
+              <div>
+                <label className="label text-xs">{t.priceData.silverRSI}</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max="100"
+                  value={formData.silverRSI}
+                  onChange={e => setFormData({ ...formData, silverRSI: e.target.value })}
+                  required
+                  placeholder="50.00"
+                  className="input"
+                />
+              </div>
+              <div>
+                <label className="label text-xs">{t.priceData.platinumRSI}</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max="100"
+                  value={formData.platinumRSI}
+                  onChange={e => setFormData({ ...formData, platinumRSI: e.target.value })}
+                  required
+                  placeholder="50.00"
+                  className="input"
+                />
+              </div>
+              <div>
+                <label className="label text-xs">{t.priceData.vix} (Optional)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.vix}
+                  onChange={e => setFormData({ ...formData, vix: e.target.value })}
+                  placeholder="20.00"
+                  className="input"
+                />
+              </div>
             </div>
           </div>
 

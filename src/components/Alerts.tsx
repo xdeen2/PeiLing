@@ -1,8 +1,10 @@
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import { Bell, Check, Trash2 } from 'lucide-react';
 import { formatDate } from '../utils/helpers';
 
 export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnType<typeof useAppData>) {
+  const { t } = useLanguage();
   const unreadAlerts = data.alerts.filter(a => !a.read);
   const readAlerts = data.alerts.filter(a => a.read);
 
@@ -31,8 +33,8 @@ export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnTyp
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Alerts & Notifications</h2>
-          <p className="text-gray-600">Stay informed about important market conditions and portfolio events.</p>
+          <h2 className="text-2xl font-bold mb-2">{t.alerts.title}</h2>
+          <p className="text-gray-600">{t.alerts.subtitle}</p>
         </div>
         {unreadAlerts.length > 0 && (
           <button
@@ -40,14 +42,14 @@ export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnTyp
             className="btn btn-primary"
           >
             <Check className="w-4 h-4 inline mr-2" />
-            Mark All Read
+            {t.alerts.markAllRead}
           </button>
         )}
       </div>
 
       {/* Unread Alerts */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Unread Alerts ({unreadAlerts.length})</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.alerts.unreadAlerts} ({unreadAlerts.length})</h3>
         {unreadAlerts.length > 0 ? (
           <div className="space-y-3">
             {unreadAlerts.map(alert => (
@@ -71,14 +73,14 @@ export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnTyp
                   <button
                     onClick={() => markAlertAsRead(alert.id)}
                     className="text-primary-600 hover:text-primary-800"
-                    title="Mark as read"
+                    title={t.alerts.markAsRead}
                   >
                     <Check className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => deleteAlert(alert.id)}
                     className="text-danger-600 hover:text-danger-800"
-                    title="Delete"
+                    title={t.common.delete}
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -89,7 +91,7 @@ export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnTyp
         ) : (
           <div className="text-center py-12 text-gray-500">
             <Bell className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p>No unread alerts. You're all caught up!</p>
+            <p>{t.alerts.noUnreadAlerts}</p>
           </div>
         )}
       </div>
@@ -97,7 +99,7 @@ export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnTyp
       {/* Read Alerts */}
       {readAlerts.length > 0 && (
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Read Alerts ({readAlerts.length})</h3>
+          <h3 className="text-lg font-semibold mb-4">{ t.alerts.readAlerts} ({readAlerts.length})</h3>
           <div className="space-y-2">
             {readAlerts.slice(0, 10).map(alert => (
               <div
@@ -114,7 +116,7 @@ export default function Alerts({ data, markAlertAsRead, deleteAlert }: ReturnTyp
                 <button
                   onClick={() => deleteAlert(alert.id)}
                   className="text-gray-400 hover:text-danger-600"
-                  title="Delete"
+                  title={t.common.delete}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

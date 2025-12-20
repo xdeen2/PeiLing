@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import { Transaction, Metal, TransactionType } from '../types';
 import { generateId, getCurrentDate, formatDate, getMetalName } from '../utils/helpers';
 import { formatCurrency, formatGrams, calculateGSR } from '../utils/calculations';
@@ -13,6 +14,7 @@ export default function TransactionLog({
   updateTransaction,
   deleteTransaction,
 }: TransactionLogProps) {
+  const { t } = useLanguage();
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [filterMetal, setFilterMetal] = useState<Metal | 'all'>('all');
@@ -24,7 +26,7 @@ export default function TransactionLog({
     type: 'buy' as TransactionType,
     quantity: '',
     price: '',
-    platform: 'Huaan ETF',
+    platform: t.transactions.platformHuaan,
     notes: '',
   });
 
@@ -84,7 +86,7 @@ export default function TransactionLog({
       type: 'buy',
       quantity: '',
       price: '',
-      platform: 'Huaan ETF',
+      platform: t.transactions.platformHuaan,
       notes: '',
     });
     setShowForm(false);
@@ -121,7 +123,7 @@ export default function TransactionLog({
       {showForm && (
         <div className="card">
           <h3 className="text-lg font-semibold mb-4">
-            {editingId ? 'Edit Transaction' : 'New Transaction'}
+            {editingId ? t.transactions.editTransaction : t.transactions.newTransaction}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -288,7 +290,7 @@ export default function TransactionLog({
                     </td>
                     <td>
                       <span className={`badge ${tx.type === 'buy' ? 'badge-success' : 'badge-warning'}`}>
-                        {tx.type.toUpperCase()}
+                        {tx.type === 'buy' ? t.transactions.buy.toUpperCase() : t.transactions.sell.toUpperCase()}
                       </span>
                     </td>
                     <td>{formatGrams(tx.quantity)}</td>
@@ -309,7 +311,7 @@ export default function TransactionLog({
                         </button>
                         <button
                           onClick={() => {
-                            if (confirm('Delete this transaction?')) {
+                            if (confirm(t.transactions.deleteConfirm)) {
                               deleteTransaction(tx.id);
                             }
                           }}

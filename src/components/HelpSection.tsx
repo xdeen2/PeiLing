@@ -1,11 +1,13 @@
+import { useLanguage } from '../contexts/LanguageContext';
 import { BookOpen, Calculator, TrendingUp } from 'lucide-react';
 
 export default function HelpSection() {
+  const { t } = useLanguage();
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Help & Educational Resources</h2>
-        <p className="text-gray-600">Learn about the investment strategy and how to use PeiLing effectively.</p>
+        <h2 className="text-2xl font-bold mb-4">{ t.help.title}</h2>
+        <p className="text-gray-600">{t.help.subtitle}</p>
       </div>
 
       {/* Strategy Overview */}

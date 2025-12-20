@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import { Settings as SettingsIcon } from 'lucide-react';
 
 export default function Settings({ data, updateConfig }: ReturnType<typeof useAppData>) {
+  const { t } = useLanguage();
   const [config, setConfig] = useState(data.config);
 
   useEffect(() => {
@@ -11,22 +13,22 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
 
   const handleSave = () => {
     updateConfig(config);
-    alert('Settings saved successfully!');
+    alert(t.settings.settingsSaved);
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Strategy Configuration & Settings</h2>
-        <p className="text-gray-600">Configure your investment strategy parameters.</p>
+        <h2 className="text-2xl font-bold mb-4">{t.settings.title}</h2>
+        <p className="text-gray-600">{t.settings.subtitle}</p>
       </div>
 
       {/* Investment Parameters */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Investment Parameters</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.settings.investmentParameters}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="label">Total Capital (¥)</label>
+            <label className="label">{ t.settings.totalCapital}</label>
             <input
               type="number"
               value={config.totalCapital}
@@ -35,7 +37,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Accumulation Start Date</label>
+            <label className="label">{ t.settings.accumulationStartDate}</label>
             <input
               type="date"
               value={config.accumulationStartDate}
@@ -44,7 +46,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Active Capital %</label>
+            <label className="label">{ t.settings.activeCapitalPercent}</label>
             <input
               type="number"
               value={config.activeCapitalPercent}
@@ -53,7 +55,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Opportunity Capital %</label>
+            <label className="label">{ t.settings.opportunityCapitalPercent}</label>
             <input
               type="number"
               value={config.opportunityCapitalPercent}
@@ -66,10 +68,10 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
 
       {/* Target Allocation */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Target Allocation (%)</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.settings.targetAllocation}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="label">Gold %</label>
+            <label className="label">{ t.settings.goldPercent}</label>
             <input
               type="number"
               value={config.targetAllocation.gold}
@@ -81,7 +83,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Silver %</label>
+            <label className="label">{ t.settings.silverPercent}</label>
             <input
               type="number"
               value={config.targetAllocation.silver}
@@ -93,7 +95,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Platinum %</label>
+            <label className="label">{ t.settings.platinumPercent}</label>
             <input
               type="number"
               value={config.targetAllocation.platinum}
@@ -109,10 +111,10 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
 
       {/* RSI Thresholds */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">RSI Thresholds</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.settings.rsiThresholds}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="label">Pause Buying (Overbought)</label>
+            <label className="label">{ t.settings.pauseBuying}</label>
             <input
               type="number"
               value={config.rsiThresholds.pause}
@@ -124,7 +126,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Reduce Buying</label>
+            <label className="label">{ t.settings.reduceBuying}</label>
             <input
               type="number"
               value={config.rsiThresholds.reduce}
@@ -136,7 +138,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Normal/Aggressive Threshold</label>
+            <label className="label">{ t.settings.normalAggressiveThreshold}</label>
             <input
               type="number"
               value={config.rsiThresholds.normal}
@@ -152,10 +154,10 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
 
       {/* GSR Parameters */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Gold-Silver Ratio Parameters</h3>
+        <h3 className="text-lg font-semibold mb-4">{ t.settings.gsrParameters}</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="label">Normal Range Min</label>
+            <label className="label">{ t.settings.normalRangeMin}</label>
             <input
               type="number"
               value={config.gsrParameters.normalMin}
@@ -167,7 +169,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Normal Range Max</label>
+            <label className="label">{ t.settings.normalRangeMax}</label>
             <input
               type="number"
               value={config.gsrParameters.normalMax}
@@ -179,7 +181,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Silver Cheap Threshold</label>
+            <label className="label">{ t.settings.silverCheapThreshold}</label>
             <input
               type="number"
               value={config.gsrParameters.silverCheap}
@@ -191,7 +193,7 @@ export default function Settings({ data, updateConfig }: ReturnType<typeof useAp
             />
           </div>
           <div>
-            <label className="label">Gold Cheap Threshold</label>
+            <label className="label">{ t.settings.goldCheapThreshold}</label>
             <input
               type="number"
               value={config.gsrParameters.goldCheap}
