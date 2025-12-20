@@ -64,28 +64,28 @@ export default function LimitOrderGenerator({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Limit Order Generator</h2>
-        <p className="text-gray-600">Generate tiered limit orders based on your monthly allocation and market conditions.</p>
+        <h2 className="text-2xl font-bold mb-4">{t.limitOrders.title}</h2>
+        <p className="text-gray-600">{t.limitOrders.subtitle}</p>
       </div>
 
       {/* Order Generator Form */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Generate New Orders</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.limitOrders.generateNewOrders}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="label">Metal</label>
+            <label className="label">{t.limitOrders.metal}</label>
             <select
               value={selectedMetal}
               onChange={e => setSelectedMetal(e.target.value as Metal)}
               className="input"
             >
-              <option value="gold">Gold</option>
-              <option value="silver">Silver</option>
-              <option value="platinum">Platinum</option>
+              <option value="gold">{t.metals.gold}</option>
+              <option value="silver">{t.metals.silver}</option>
+              <option value="platinum">{t.metals.platinum}</option>
             </select>
           </div>
           <div>
-            <label className="label">Allocation Amount (¥)</label>
+            <label className="label">{t.limitOrders.allocationAmount}</label>
             <input
               type="number"
               value={allocationAmount}
@@ -95,7 +95,7 @@ export default function LimitOrderGenerator({
             />
           </div>
           <div>
-            <label className="label">Current Price (¥/g)</label>
+            <label className="label">{t.limitOrders.currentPrice}</label>
             <input
               type="number"
               value={currentPrice}
@@ -107,7 +107,7 @@ export default function LimitOrderGenerator({
           <div className="flex items-end">
             <button onClick={handleGenerateOrders} className="btn btn-primary w-full">
               <Plus className="w-4 h-4 inline mr-2" />
-              Generate Orders
+              {t.limitOrders.generateOrders}
             </button>
           </div>
         </div>
@@ -115,16 +115,16 @@ export default function LimitOrderGenerator({
         {/* Preview */}
         {allocationAmount && currentPrice && (
           <div className="mt-6">
-            <h4 className="font-semibold mb-3">Order Preview</h4>
+            <h4 className="font-semibold mb-3">{t.limitOrders.orderPreview}</h4>
             <table className="table">
               <thead>
                 <tr>
-                  <th>Tier</th>
-                  <th>Spread</th>
-                  <th>Target Price</th>
-                  <th>Amount</th>
-                  <th>Quantity</th>
-                  <th>Percentage</th>
+                  <th>{t.limitOrders.tier}</th>
+                  <th>{t.limitOrders.spread}</th>
+                  <th>{t.limitOrders.targetPrice}</th>
+                  <th>{t.common.amount}</th>
+                  <th>{t.common.quantity}</th>
+                  <th>{t.limitOrders.percentage}</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,7 +135,7 @@ export default function LimitOrderGenerator({
                   data.config.limitOrderSpreads[selectedMetal]
                 ).map(order => (
                   <tr key={order.tier}>
-                    <td>Tier {order.tier}</td>
+                    <td>{t.limitOrders.tier} {order.tier}</td>
                     <td>{data.config.limitOrderSpreads[selectedMetal][order.tier - 1]}%</td>
                     <td>{formatCurrency(order.targetPrice)}/g</td>
                     <td>{formatCurrency(order.amount)}</td>
@@ -151,19 +151,19 @@ export default function LimitOrderGenerator({
 
       {/* Pending Orders */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Pending Orders ({pendingOrders.length})</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.limitOrders.pendingOrders} ({pendingOrders.length})</h3>
         {pendingOrders.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Created</th>
-                  <th>Metal</th>
-                  <th>Tier</th>
-                  <th>Target Price</th>
-                  <th>Quantity</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
+                  <th>{t.limitOrders.created}</th>
+                  <th>{t.limitOrders.metal}</th>
+                  <th>{t.limitOrders.tier}</th>
+                  <th>{t.limitOrders.targetPrice}</th>
+                  <th>{t.common.quantity}</th>
+                  <th>{t.common.amount}</th>
+                  <th>{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -173,7 +173,7 @@ export default function LimitOrderGenerator({
                     <td>
                       <span className="badge badge-info">{getMetalName(order.metal)}</span>
                     </td>
-                    <td>Tier {order.tier}</td>
+                    <td>{t.limitOrders.tier} {order.tier}</td>
                     <td>{formatCurrency(order.targetPrice)}/g</td>
                     <td>{formatGrams(order.quantity)}</td>
                     <td>{formatCurrency(order.amount)}</td>
@@ -204,7 +204,7 @@ export default function LimitOrderGenerator({
         ) : (
           <div className="text-center py-12 text-gray-500">
             <ListOrdered className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p>No pending orders. Generate some orders to get started.</p>
+            <p>{t.limitOrders.noPendingOrders}</p>
           </div>
         )}
       </div>
@@ -212,19 +212,19 @@ export default function LimitOrderGenerator({
       {/* Filled Orders */}
       {filledOrders.length > 0 && (
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Recently Filled Orders</h3>
+          <h3 className="text-lg font-semibold mb-4">{t.limitOrders.recentlyFilledOrders}</h3>
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Filled Date</th>
-                  <th>Metal</th>
-                  <th>Tier</th>
-                  <th>Target Price</th>
-                  <th>Filled Price</th>
-                  <th>Quantity</th>
-                  <th>Amount</th>
-                  <th>Savings</th>
+                  <th>{t.limitOrders.filledDate}</th>
+                  <th>{t.limitOrders.metal}</th>
+                  <th>{t.limitOrders.tier}</th>
+                  <th>{t.limitOrders.targetPrice}</th>
+                  <th>{t.limitOrders.filledPrice}</th>
+                  <th>{t.common.quantity}</th>
+                  <th>{t.common.amount}</th>
+                  <th>{t.limitOrders.savings}</th>
                 </tr>
               </thead>
               <tbody>
@@ -238,7 +238,7 @@ export default function LimitOrderGenerator({
                       <td>
                         <span className="badge badge-success">{getMetalName(order.metal)}</span>
                       </td>
-                      <td>Tier {order.tier}</td>
+                      <td>{t.limitOrders.tier} {order.tier}</td>
                       <td>{formatCurrency(order.targetPrice)}/g</td>
                       <td>{order.filledPrice ? formatCurrency(order.filledPrice) : '-'}/g</td>
                       <td>{formatGrams(order.quantity)}</td>

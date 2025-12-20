@@ -110,12 +110,12 @@ export default function TransactionLog({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Transaction Log</h2>
-          <p className="text-gray-600">Record all buy and sell transactions.</p>
+          <h2 className="text-2xl font-bold mb-2">{t.transactions.title}</h2>
+          <p className="text-gray-600">{t.transactions.subtitle}</p>
         </div>
         <button onClick={() => setShowForm(!showForm)} className="btn btn-primary">
           <Plus className="w-4 h-4 inline mr-2" />
-          Add Transaction
+          {t.transactions.addTransaction}
         </button>
       </div>
 
@@ -128,7 +128,7 @@ export default function TransactionLog({
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="label">Date</label>
+                <label className="label">{t.common.date}</label>
                 <input
                   type="date"
                   value={formData.date}
@@ -138,30 +138,30 @@ export default function TransactionLog({
                 />
               </div>
               <div>
-                <label className="label">Metal</label>
+                <label className="label">{t.limitOrders.metal}</label>
                 <select
                   value={formData.metal}
                   onChange={e => setFormData({ ...formData, metal: e.target.value as Metal })}
                   className="input"
                 >
-                  <option value="gold">Gold</option>
-                  <option value="silver">Silver</option>
-                  <option value="platinum">Platinum</option>
+                  <option value="gold">{t.metals.gold}</option>
+                  <option value="silver">{t.metals.silver}</option>
+                  <option value="platinum">{t.metals.platinum}</option>
                 </select>
               </div>
               <div>
-                <label className="label">Type</label>
+                <label className="label">{t.transactions.type}</label>
                 <select
                   value={formData.type}
                   onChange={e => setFormData({ ...formData, type: e.target.value as TransactionType })}
                   className="input"
                 >
-                  <option value="buy">Buy</option>
-                  <option value="sell">Sell</option>
+                  <option value="buy">{t.transactions.buy}</option>
+                  <option value="sell">{t.transactions.sell}</option>
                 </select>
               </div>
               <div>
-                <label className="label">Quantity (grams)</label>
+                <label className="label">{t.transactions.quantityGrams}</label>
                 <input
                   type="number"
                   step="0.01"
@@ -173,7 +173,7 @@ export default function TransactionLog({
                 />
               </div>
               <div>
-                <label className="label">Price (¥/gram)</label>
+                <label className="label">{t.transactions.pricePerGram}</label>
                 <input
                   type="number"
                   step="0.01"
@@ -185,32 +185,32 @@ export default function TransactionLog({
                 />
               </div>
               <div>
-                <label className="label">Platform</label>
+                <label className="label">{t.transactions.platform}</label>
                 <select
                   value={formData.platform}
                   onChange={e => setFormData({ ...formData, platform: e.target.value })}
                   className="input"
                 >
-                  <option value="Huaan ETF">Huaan ETF</option>
-                  <option value="E Fund ETF">E Fund ETF</option>
-                  <option value="ICBC Paper Gold">ICBC Paper Gold</option>
-                  <option value="Other">Other</option>
+                  <option value="Huaan ETF">{t.transactions.platformHuaan}</option>
+                  <option value="E Fund ETF">{t.transactions.platformEFund}</option>
+                  <option value="ICBC Paper Gold">{t.transactions.platformICBC}</option>
+                  <option value="Other">{t.transactions.platformOther}</option>
                 </select>
               </div>
             </div>
             <div>
-              <label className="label">Notes</label>
+              <label className="label">{t.common.notes}</label>
               <textarea
                 value={formData.notes}
                 onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Optional notes..."
+                placeholder={t.transactions.notesPlaceholder}
                 className="input"
                 rows={3}
               />
             </div>
             <div className="flex gap-2">
               <button type="submit" className="btn btn-primary">
-                {editingId ? 'Update' : 'Add'} Transaction
+                {editingId ? t.common.update : t.common.add} {t.nav.transactions}
               </button>
               <button
                 type="button"
@@ -220,7 +220,7 @@ export default function TransactionLog({
                 }}
                 className="btn btn-secondary"
               >
-                Cancel
+                {t.common.cancel}
               </button>
             </div>
           </form>
@@ -232,28 +232,28 @@ export default function TransactionLog({
         <div className="flex gap-4 items-center">
           <Filter className="w-5 h-5 text-gray-600" />
           <div>
-            <label className="label mb-0">Metal</label>
+            <label className="label mb-0">{t.limitOrders.metal}</label>
             <select
               value={filterMetal}
               onChange={e => setFilterMetal(e.target.value as Metal | 'all')}
               className="input w-40"
             >
-              <option value="all">All</option>
-              <option value="gold">Gold</option>
-              <option value="silver">Silver</option>
-              <option value="platinum">Platinum</option>
+              <option value="all">{t.common.all}</option>
+              <option value="gold">{t.metals.gold}</option>
+              <option value="silver">{t.metals.silver}</option>
+              <option value="platinum">{t.metals.platinum}</option>
             </select>
           </div>
           <div>
-            <label className="label mb-0">Type</label>
+            <label className="label mb-0">{t.transactions.type}</label>
             <select
               value={filterType}
               onChange={e => setFilterType(e.target.value as TransactionType | 'all')}
               className="input w-40"
             >
-              <option value="all">All</option>
-              <option value="buy">Buy</option>
-              <option value="sell">Sell</option>
+              <option value="all">{t.common.all}</option>
+              <option value="buy">{t.transactions.buy}</option>
+              <option value="sell">{t.transactions.sell}</option>
             </select>
           </div>
         </div>
@@ -262,23 +262,23 @@ export default function TransactionLog({
       {/* Transactions Table */}
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">
-          Transactions ({filteredTransactions.length})
+          {t.transactions.title} ({filteredTransactions.length})
         </h3>
         {filteredTransactions.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Metal</th>
-                  <th>Type</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Amount</th>
-                  <th>Platform</th>
-                  <th>RSI</th>
+                  <th>{t.common.date}</th>
+                  <th>{t.limitOrders.metal}</th>
+                  <th>{t.transactions.type}</th>
+                  <th>{t.common.quantity}</th>
+                  <th>{t.common.price}</th>
+                  <th>{t.common.amount}</th>
+                  <th>{t.transactions.platform}</th>
+                  <th>{t.calculator.rsi}</th>
                   <th>GSR</th>
-                  <th>Actions</th>
+                  <th>{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -329,7 +329,7 @@ export default function TransactionLog({
         ) : (
           <div className="text-center py-12 text-gray-500">
             <Receipt className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p>No transactions yet. Add your first transaction to get started.</p>
+            <p>{t.transactions.noTransactions}</p>
           </div>
         )}
       </div>

@@ -100,8 +100,8 @@ export default function MonthlyInvestmentCalculator({
       <div className="card">
         <div className="text-center py-12">
           <Calculator className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">No Price Data Available</h3>
-          <p className="text-gray-600">Please add price data to use the investment calculator.</p>
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">{t.calculator.noPriceData}</h3>
+          <p className="text-gray-600">{t.calculator.addPricePrompt}</p>
         </div>
       </div>
     );
@@ -117,15 +117,15 @@ export default function MonthlyInvestmentCalculator({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Monthly Investment Calculator</h2>
+        <h2 className="text-2xl font-bold mb-4">{t.calculator.title}</h2>
         <p className="text-gray-600">
-          Calculate your monthly investment amount based on value averaging strategy and market conditions.
+          {t.calculator.subtitle}
         </p>
       </div>
 
       {/* Date Selection */}
       <div className="card">
-        <label className="label">Calculation Date</label>
+        <label className="label">{t.calculator.calculationDate}</label>
         <input
           type="date"
           value={selectedDate}
@@ -136,22 +136,22 @@ export default function MonthlyInvestmentCalculator({
 
       {/* Value Averaging Calculation */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Value Averaging Calculation</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.calculator.valueAveraging}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <p className="text-sm text-gray-600 mb-1">Target Portfolio Value</p>
+            <p className="text-sm text-gray-600 mb-1">{t.calculator.targetPortfolioValue}</p>
             <p className="text-2xl font-bold text-primary-600">
               {formatCurrency(calculation.targetValue)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 mb-1">Current Portfolio Value</p>
+            <p className="text-sm text-gray-600 mb-1">{t.calculator.currentPortfolioValue}</p>
             <p className="text-2xl font-bold">
               {formatCurrency(calculation.currentValue)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 mb-1">Required Investment</p>
+            <p className="text-sm text-gray-600 mb-1">{t.calculator.requiredInvestment}</p>
             <p className="text-2xl font-bold text-success-600">
               {formatCurrency(calculation.requiredInvestment)}
             </p>
@@ -161,39 +161,39 @@ export default function MonthlyInvestmentCalculator({
 
       {/* RSI Analysis */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">RSI Analysis & Recommendations</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.calculator.rsiAnalysis}</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium">Gold RSI</span>
+                <span className="font-medium">{t.priceData.goldRSI}</span>
                 <span className="text-2xl font-bold">{latestPrice.goldRSI}</span>
               </div>
               <p className={`text-sm ${goldRec.color}`}>{goldRec.text}</p>
               <p className="text-xs text-gray-600 mt-1">
-                Multiplier: {goldRec.multiplier}x
+                {t.calculator.multiplier}: {goldRec.multiplier}x
               </p>
             </div>
 
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium">Silver RSI</span>
+                <span className="font-medium">{t.priceData.silverRSI}</span>
                 <span className="text-2xl font-bold">{latestPrice.silverRSI}</span>
               </div>
               <p className={`text-sm ${silverRec.color}`}>{silverRec.text}</p>
               <p className="text-xs text-gray-600 mt-1">
-                Multiplier: {silverRec.multiplier}x
+                {t.calculator.multiplier}: {silverRec.multiplier}x
               </p>
             </div>
 
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium">Platinum RSI</span>
+                <span className="font-medium">{t.priceData.platinumRSI}</span>
                 <span className="text-2xl font-bold">{latestPrice.platinumRSI}</span>
               </div>
               <p className={`text-sm ${platinumRec.color}`}>{platinumRec.text}</p>
               <p className="text-xs text-gray-600 mt-1">
-                Multiplier: {platinumRec.multiplier}x
+                {t.calculator.multiplier}: {platinumRec.multiplier}x
               </p>
             </div>
           </div>
@@ -202,13 +202,13 @@ export default function MonthlyInvestmentCalculator({
 
       {/* GSR Analysis */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Gold-Silver Ratio Analysis</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.calculator.gsrAnalysis}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <p className="text-sm text-gray-600 mb-1">Current GSR</p>
+            <p className="text-sm text-gray-600 mb-1">{t.calculator.currentGSR}</p>
             <p className="text-3xl font-bold">{gsr.toFixed(2)}</p>
             <p className="text-sm text-gray-600 mt-2">
-              Normal Range: {data.config.gsrParameters.normalMin} - {data.config.gsrParameters.normalMax}
+              {t.calculator.normalRange}: {data.config.gsrParameters.normalMin} - {data.config.gsrParameters.normalMax}
             </p>
           </div>
           <div className="flex items-center">
@@ -219,9 +219,9 @@ export default function MonthlyInvestmentCalculator({
               </div>
               {calculation.gsrRebalancing.needed && (
                 <div className="mt-4 p-3 bg-primary-50 rounded-lg">
-                  <p className="text-sm font-medium">Rebalancing Recommended</p>
+                  <p className="text-sm font-medium">{t.calculator.rebalancingRecommended}</p>
                   <p className="text-sm text-gray-700 mt-1">
-                    Consider shifting allocation from {calculation.gsrRebalancing.fromMetal} to{' '}
+                    {t.calculator.rebalancingDescription} {calculation.gsrRebalancing.fromMetal} {t.calculator.to}{' '}
                     {calculation.gsrRebalancing.toMetal}
                   </p>
                 </div>
@@ -233,12 +233,12 @@ export default function MonthlyInvestmentCalculator({
 
       {/* Final Allocation */}
       <div className="card bg-gradient-to-br from-primary-50 to-primary-100">
-        <h3 className="text-lg font-semibold mb-4">Recommended Monthly Allocation</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.calculator.recommendedMonthlyAllocation}</h3>
         <div className="space-y-3">
           <div className="flex items-center justify-between p-4 bg-white rounded-lg">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-              <span className="font-medium">Gold</span>
+              <span className="font-medium">{t.metals.gold}</span>
             </div>
             <div className="text-right">
               <p className="text-xl font-bold text-primary-600">
@@ -253,7 +253,7 @@ export default function MonthlyInvestmentCalculator({
           <div className="flex items-center justify-between p-4 bg-white rounded-lg">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-              <span className="font-medium">Silver</span>
+              <span className="font-medium">{t.metals.silver}</span>
             </div>
             <div className="text-right">
               <p className="text-xl font-bold text-primary-600">
@@ -268,7 +268,7 @@ export default function MonthlyInvestmentCalculator({
           <div className="flex items-center justify-between p-4 bg-white rounded-lg">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-              <span className="font-medium">Platinum</span>
+              <span className="font-medium">{t.metals.platinum}</span>
             </div>
             <div className="text-right">
               <p className="text-xl font-bold text-primary-600">
@@ -281,7 +281,7 @@ export default function MonthlyInvestmentCalculator({
           </div>
 
           <div className="flex items-center justify-between p-4 bg-primary-600 text-white rounded-lg">
-            <span className="font-bold text-lg">Total Investment</span>
+            <span className="font-bold text-lg">{t.calculator.totalInvestment}</span>
             <span className="font-bold text-2xl">
               {formatCurrency(
                 calculation.finalAllocation.gold +
@@ -300,8 +300,8 @@ export default function MonthlyInvestmentCalculator({
             <div className="flex items-center gap-3">
               <Brain className="w-6 h-6 text-purple-600" />
               <div>
-                <h3 className="text-lg font-bold text-gray-900">AI Entry Point Predictions</h3>
-                <p className="text-sm text-gray-600">Optimal buying opportunities powered by DeepSeek AI</p>
+                <h3 className="text-lg font-bold text-gray-900">{t.ai.entryPredictions}</h3>
+                <p className="text-sm text-gray-600">{t.ai.optimalBuying}</p>
               </div>
             </div>
             <button
@@ -310,14 +310,14 @@ export default function MonthlyInvestmentCalculator({
               className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${aiAnalysis.loading ? 'animate-spin' : ''}`} />
-              Refresh
+              {t.ai.refresh}
             </button>
           </div>
 
           {aiAnalysis.loading ? (
             <div className="text-center py-8">
               <RefreshCw className="w-8 h-8 text-purple-600 animate-spin mx-auto mb-2" />
-              <p className="text-purple-900 text-sm">AI is analyzing optimal entry points...</p>
+              <p className="text-purple-900 text-sm">{t.ai.analyzing}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -325,7 +325,7 @@ export default function MonthlyInvestmentCalculator({
               {goldEntry && (
                 <div className="bg-white rounded-lg p-4 border-2 border-yellow-200">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-bold text-gray-900">Gold</span>
+                    <span className="font-bold text-gray-900">{t.metals.gold}</span>
                     {goldEntry.shouldBuy ? (
                       <TrendingUp className="w-5 h-5 text-green-600" />
                     ) : (
@@ -334,17 +334,17 @@ export default function MonthlyInvestmentCalculator({
                   </div>
                   <div className="space-y-2">
                     <div>
-                      <p className="text-xs text-gray-600">Recommendation</p>
+                      <p className="text-xs text-gray-600">{t.ai.recommendation}</p>
                       <p className={`text-sm font-semibold ${goldEntry.shouldBuy ? 'text-green-700' : 'text-red-700'}`}>
-                        {goldEntry.shouldBuy ? 'BUY NOW' : 'WAIT'}
+                        {goldEntry.shouldBuy ? t.ai.buyNow : t.ai.wait}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Target Price</p>
+                      <p className="text-xs text-gray-600">{t.ai.targetPrice}</p>
                       <p className="text-lg font-bold text-yellow-600">{formatCurrency(goldEntry.targetPrice)}/g</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Confidence</p>
+                      <p className="text-xs text-gray-600">{t.ai.confidence}</p>
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-gray-200 rounded-full h-2">
                           <div
@@ -356,7 +356,7 @@ export default function MonthlyInvestmentCalculator({
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Timeframe</p>
+                      <p className="text-xs text-gray-600">{t.ai.timeframe}</p>
                       <p className="text-sm font-medium text-gray-700">{goldEntry.timeframe}</p>
                     </div>
                     <div className="pt-2 border-t border-gray-200">
@@ -370,7 +370,7 @@ export default function MonthlyInvestmentCalculator({
               {silverEntry && (
                 <div className="bg-white rounded-lg p-4 border-2 border-gray-300">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-bold text-gray-900">Silver</span>
+                    <span className="font-bold text-gray-900">{t.metals.silver}</span>
                     {silverEntry.shouldBuy ? (
                       <TrendingUp className="w-5 h-5 text-green-600" />
                     ) : (
@@ -379,17 +379,17 @@ export default function MonthlyInvestmentCalculator({
                   </div>
                   <div className="space-y-2">
                     <div>
-                      <p className="text-xs text-gray-600">Recommendation</p>
+                      <p className="text-xs text-gray-600">{t.ai.recommendation}</p>
                       <p className={`text-sm font-semibold ${silverEntry.shouldBuy ? 'text-green-700' : 'text-red-700'}`}>
-                        {silverEntry.shouldBuy ? 'BUY NOW' : 'WAIT'}
+                        {silverEntry.shouldBuy ? t.ai.buyNow : t.ai.wait}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Target Price</p>
+                      <p className="text-xs text-gray-600">{t.ai.targetPrice}</p>
                       <p className="text-lg font-bold text-gray-600">{formatCurrency(silverEntry.targetPrice)}/g</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Confidence</p>
+                      <p className="text-xs text-gray-600">{t.ai.confidence}</p>
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-gray-200 rounded-full h-2">
                           <div
@@ -401,7 +401,7 @@ export default function MonthlyInvestmentCalculator({
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Timeframe</p>
+                      <p className="text-xs text-gray-600">{t.ai.timeframe}</p>
                       <p className="text-sm font-medium text-gray-700">{silverEntry.timeframe}</p>
                     </div>
                     <div className="pt-2 border-t border-gray-200">
@@ -415,7 +415,7 @@ export default function MonthlyInvestmentCalculator({
               {platinumEntry && (
                 <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-bold text-gray-900">Platinum</span>
+                    <span className="font-bold text-gray-900">{t.metals.platinum}</span>
                     {platinumEntry.shouldBuy ? (
                       <TrendingUp className="w-5 h-5 text-green-600" />
                     ) : (
@@ -424,17 +424,17 @@ export default function MonthlyInvestmentCalculator({
                   </div>
                   <div className="space-y-2">
                     <div>
-                      <p className="text-xs text-gray-600">Recommendation</p>
+                      <p className="text-xs text-gray-600">{t.ai.recommendation}</p>
                       <p className={`text-sm font-semibold ${platinumEntry.shouldBuy ? 'text-green-700' : 'text-red-700'}`}>
-                        {platinumEntry.shouldBuy ? 'BUY NOW' : 'WAIT'}
+                        {platinumEntry.shouldBuy ? t.ai.buyNow : t.ai.wait}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Target Price</p>
+                      <p className="text-xs text-gray-600">{t.ai.targetPrice}</p>
                       <p className="text-lg font-bold text-gray-500">{formatCurrency(platinumEntry.targetPrice)}/g</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Confidence</p>
+                      <p className="text-xs text-gray-600">{t.ai.confidence}</p>
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-gray-200 rounded-full h-2">
                           <div
@@ -446,7 +446,7 @@ export default function MonthlyInvestmentCalculator({
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-600">Timeframe</p>
+                      <p className="text-xs text-gray-600">{t.ai.timeframe}</p>
                       <p className="text-sm font-medium text-gray-700">{platinumEntry.timeframe}</p>
                     </div>
                     <div className="pt-2 border-t border-gray-200">
@@ -465,13 +465,13 @@ export default function MonthlyInvestmentCalculator({
         <div className="flex gap-3">
           <Info className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-semibold mb-2">How to Use This Calculator</h4>
+            <h4 className="font-semibold mb-2">{t.calculator.howToUse}</h4>
             <ul className="text-sm text-gray-700 space-y-1">
-              <li>• The calculator uses value averaging to determine your monthly investment amount</li>
-              <li>• RSI values adjust allocation: pause buying when overbought (&gt;70), increase when oversold (&lt;30)</li>
-              <li>• Gold-Silver Ratio helps identify arbitrage opportunities between metals</li>
-              <li>• Use the "Generate Orders" button to create tiered limit orders based on this allocation</li>
-              {hasDeepSeekKey && <li>• AI predictions help identify optimal entry points based on price trends and technical analysis</li>}
+              <li>• {t.calculator.howToUseList[0]}</li>
+              <li>• {t.calculator.howToUseList[1]}</li>
+              <li>• {t.calculator.howToUseList[2]}</li>
+              <li>• {t.calculator.howToUseList[3]}</li>
+              {hasDeepSeekKey && <li>• {t.ai.feature6}</li>}
             </ul>
           </div>
         </div>
