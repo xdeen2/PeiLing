@@ -17,6 +17,7 @@ import DataManagement from './components/DataManagement';
 import HelpSection from './components/HelpSection';
 import UserProfile from './components/UserProfile';
 import LanguageToggle from './components/LanguageToggle';
+import ApiKeyManager from './components/ApiKeyManager';
 import {
   LayoutDashboard,
   Calculator,
@@ -32,6 +33,7 @@ import {
   Database,
   HelpCircle,
   User,
+  Key,
 } from 'lucide-react';
 
 type Tab =
@@ -46,6 +48,7 @@ type Tab =
   | 'reports'
   | 'settings'
   | 'alerts'
+  | 'apikeys'
   | 'data'
   | 'help'
   | 'profile';
@@ -67,6 +70,7 @@ function App() {
     { id: 'rebalancing', name: t.nav.rebalancing, icon: RefreshCw },
     { id: 'reports', name: t.nav.reports, icon: BarChart3 },
     { id: 'alerts', name: t.nav.alerts, icon: Bell },
+    { id: 'apikeys', name: t.nav.apiKeys, icon: Key },
     { id: 'settings', name: t.nav.settings, icon: SettingsIcon },
     { id: 'data', name: t.nav.data, icon: Database },
     { id: 'help', name: t.nav.help, icon: HelpCircle },
@@ -157,6 +161,7 @@ function App() {
         {activeTab === 'reports' && <PerformanceReports {...appData} />}
         {activeTab === 'settings' && <Settings {...appData} />}
         {activeTab === 'alerts' && <Alerts {...appData} />}
+        {activeTab === 'apikeys' && <ApiKeyManager />}
         {activeTab === 'data' && <DataManagement {...appData} />}
         {activeTab === 'help' && <HelpSection />}
         {activeTab === 'profile' && <UserProfile />}

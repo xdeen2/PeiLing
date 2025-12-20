@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import { PriceData } from '../types';
 import { generateId, getCurrentDate, formatDate } from '../utils/helpers';
 import { calculateGSR, formatCurrency } from '../utils/calculations';
@@ -14,6 +15,7 @@ export default function PriceDataEntry({
   updatePriceData,
   deletePriceData,
 }: PriceDataEntryProps) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     date: getCurrentDate(),
     goldPrice: '',
@@ -91,8 +93,8 @@ export default function PriceDataEntry({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Price & Market Data</h2>
-        <p className="text-gray-600">Track daily prices and technical indicators for precious metals.</p>
+        <h2 className="text-2xl font-bold mb-4">{t.priceData.title}</h2>
+        <p className="text-gray-600">{t.priceData.subtitle}</p>
       </div>
 
       {/* Automatic Price Fetcher */}
@@ -100,12 +102,12 @@ export default function PriceDataEntry({
 
       {/* Data Sources Info */}
       <div className="card bg-blue-50 border-l-4 border-blue-500">
-        <h4 className="font-semibold text-blue-900 mb-2">📊 Recommended Price Data Sources</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">📊 {t.priceData.recommendedSources}</h4>
         <div className="text-sm text-blue-800 space-y-1">
-          <p><strong>Official Exchanges:</strong> Shanghai Gold Exchange (SGE), Bank of China, ICBC Precious Metals</p>
-          <p><strong>ETF Platforms:</strong> Huaan Gold ETF (518880), E Fund Gold ETF (159934)</p>
+          <p><strong>{t.priceData.officialExchanges}:</strong> Shanghai Gold Exchange (SGE), Bank of China, ICBC Precious Metals</p>
+          <p><strong>{t.priceData.etfPlatforms}:</strong> Huaan Gold ETF (518880), E Fund Gold ETF (159934)</p>
           <p className="text-xs text-blue-700 mt-2">
-            💡 Use SGE for most authoritative yuan-denominated prices. Calculate 30-period RSI from daily price data or use values from your trading platform.
+            💡 {t.priceData.sourceNote}
           </p>
         </div>
       </div>
@@ -113,12 +115,12 @@ export default function PriceDataEntry({
       {/* Entry Form */}
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">
-          {editingId ? 'Edit Price Data' : 'Add New Price Data'}
+          {editingId ? t.priceData.editPrice : t.priceData.addNewPrice}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="label">Date</label>
+              <label className="label">{t.common.date}</label>
               <input
                 type="date"
                 value={formData.date}
@@ -128,7 +130,7 @@ export default function PriceDataEntry({
               />
             </div>
             <div>
-              <label className="label">Gold Price (¥/g)</label>
+              <label className="label">{t.priceData.goldPrice}</label>
               <input
                 type="number"
                 step="0.01"
@@ -140,7 +142,7 @@ export default function PriceDataEntry({
               />
             </div>
             <div>
-              <label className="label">Silver Price (¥/g)</label>
+              <label className="label">{t.priceData.silverPrice}</label>
               <input
                 type="number"
                 step="0.01"
@@ -152,7 +154,7 @@ export default function PriceDataEntry({
               />
             </div>
             <div>
-              <label className="label">Platinum Price (¥/g)</label>
+              <label className="label">{t.priceData.platinumPrice}</label>
               <input
                 type="number"
                 step="0.01"
@@ -167,7 +169,7 @@ export default function PriceDataEntry({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="label">Gold RSI</label>
+              <label className="label">{t.priceData.goldRSI}</label>
               <input
                 type="number"
                 step="0.01"
@@ -181,7 +183,7 @@ export default function PriceDataEntry({
               />
             </div>
             <div>
-              <label className="label">Silver RSI</label>
+              <label className="label">{t.priceData.silverRSI}</label>
               <input
                 type="number"
                 step="0.01"
@@ -195,7 +197,7 @@ export default function PriceDataEntry({
               />
             </div>
             <div>
-              <label className="label">Platinum RSI</label>
+              <label className="label">{t.priceData.platinumRSI}</label>
               <input
                 type="number"
                 step="0.01"
@@ -209,7 +211,7 @@ export default function PriceDataEntry({
               />
             </div>
             <div>
-              <label className="label">VIX (Optional)</label>
+              <label className="label">{t.priceData.vix}</label>
               <input
                 type="number"
                 step="0.01"
@@ -224,7 +226,7 @@ export default function PriceDataEntry({
           <div className="flex gap-2">
             <button type="submit" className="btn btn-primary">
               <Plus className="w-4 h-4 inline mr-2" />
-              {editingId ? 'Update' : 'Add'} Price Data
+              {editingId ? t.common.update : t.common.add} {t.nav.prices}
             </button>
             {editingId && (
               <button
@@ -244,7 +246,7 @@ export default function PriceDataEntry({
                 }}
                 className="btn btn-secondary"
               >
-                Cancel
+                {t.common.cancel}
               </button>
             )}
           </div>
@@ -253,21 +255,21 @@ export default function PriceDataEntry({
 
       {/* Price History Table */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Price History ({data.priceData.length} entries)</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.priceData.priceHistory} ({data.priceData.length} {t.priceData.entries})</h3>
         {data.priceData.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Gold (¥/g)</th>
-                  <th>Silver (¥/g)</th>
-                  <th>Platinum (¥/g)</th>
-                  <th>Gold RSI</th>
-                  <th>Silver RSI</th>
-                  <th>Platinum RSI</th>
-                  <th>GSR</th>
-                  <th>Actions</th>
+                  <th>{t.common.date}</th>
+                  <th>{t.metals.gold} (¥/g)</th>
+                  <th>{t.metals.silver} (¥/g)</th>
+                  <th>{t.metals.platinum} (¥/g)</th>
+                  <th>{t.priceData.goldRSI}</th>
+                  <th>{t.priceData.silverRSI}</th>
+                  <th>{t.priceData.platinumRSI}</th>
+                  <th>{t.priceData.gsr}</th>
+                  <th>{t.common.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -305,7 +307,7 @@ export default function PriceDataEntry({
                           </button>
                           <button
                             onClick={() => {
-                              if (confirm('Delete this price data?')) {
+                              if (confirm(t.priceData.deleteConfirm)) {
                                 deletePriceData(price.id);
                               }
                             }}
@@ -324,7 +326,7 @@ export default function PriceDataEntry({
         ) : (
           <div className="text-center py-12 text-gray-500">
             <TrendingUp className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p>No price data yet. Add your first entry to get started.</p>
+            <p>{t.priceData.noDataYet}</p>
           </div>
         )}
       </div>

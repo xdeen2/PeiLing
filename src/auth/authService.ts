@@ -13,6 +13,7 @@ interface UserCredentials {
 
 const USERS_KEY = 'peiling-users';
 const CURRENT_USER_KEY = 'peiling-current-user';
+const DEMO_SEEDED_KEY = 'peiling-demo-seeded';
 
 // Simple hash function (in production, use proper encryption)
 function simpleHash(str: string): string {
@@ -25,7 +26,32 @@ function simpleHash(str: string): string {
   return hash.toString(36);
 }
 
+// Seed demo accounts on first run
+function seedDemoAccounts(): void {
+  const seeded = localStorage.getItem(DEMO_SEEDED_KEY);
+  if (seeded) return;
+
+  const users = authService.getUsers();
+
+  // Create jayla demo account
+  if (!users['jayla']) {
+    users['jayla'] = {
+      username: 'jayla',
+      passwordHash: simpleHash('jayla123' + 'jayla'),
+      email: 'jayla@demo.com',
+    };
+  }
+
+  authService.saveUsers(users);
+  localStorage.setItem(DEMO_SEEDED_KEY, 'true');
+}
+
 export const authService = {
+  // Initialize demo accounts
+  initializeDemoAccounts(): void {
+    seedDemoAccounts();
+  },
+
   // Get all users
   getUsers(): Record<string, UserCredentials> {
     const users = localStorage.getItem(USERS_KEY);
