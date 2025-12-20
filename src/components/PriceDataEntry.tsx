@@ -4,6 +4,7 @@ import { PriceData } from '../types';
 import { generateId, getCurrentDate, formatDate } from '../utils/helpers';
 import { calculateGSR, formatCurrency } from '../utils/calculations';
 import { TrendingUp, Plus, Edit2, Trash2 } from 'lucide-react';
+import AutoPriceFetcher from './AutoPriceFetcher';
 
 interface PriceDataEntryProps extends ReturnType<typeof useAppData> {}
 
@@ -25,6 +26,18 @@ export default function PriceDataEntry({
   });
 
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  const handlePricesFetched = (goldPrice: number, silverPrice: number) => {
+    // Only update if form is empty (not editing)
+    if (!editingId && !formData.goldPrice && !formData.silverPrice) {
+      setFormData(prev => ({
+        ...prev,
+        goldPrice: goldPrice.toString(),
+        silverPrice: silverPrice.toString(),
+        date: getCurrentDate(),
+      }));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +94,9 @@ export default function PriceDataEntry({
         <h2 className="text-2xl font-bold mb-4">Price & Market Data</h2>
         <p className="text-gray-600">Track daily prices and technical indicators for precious metals.</p>
       </div>
+
+      {/* Automatic Price Fetcher */}
+      <AutoPriceFetcher onPricesFetched={handlePricesFetched} />
 
       {/* Data Sources Info */}
       <div className="card bg-blue-50 border-l-4 border-blue-500">

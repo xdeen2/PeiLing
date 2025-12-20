@@ -51,6 +51,14 @@ export const zh: TranslationKeys = {
     back: '返回',
     next: '下一步',
     close: '关闭',
+    settings: '设置',
+    refresh: '刷新',
+    getFree: '获取免费密钥',
+    every: '每',
+    minutes: '分钟',
+    perGram: '每克',
+    ratio: '比率',
+    lastUpdated: '最后更新',
   },
 
   // Auth
@@ -121,5 +129,16 @@ export const zh: TranslationKeys = {
     english: 'English',
     chinese: '中文',
     switchLanguage: '切换语言',
+  },
+
+  // Price Data
+  priceData: {
+    autoFetch: '自动获取价格',
+    apiSettings: 'API 设置',
+    autoRefresh: '自动刷新价格',
+    fetchedFrom: '数据来源',
+    noApiKey: '未配置 API 密钥。请在设置中添加 API 密钥或手动输入价格。',
+    freeRealtime: '免费版含实时数据',
+    freeTier: '免费版每日更新',
   },
 };

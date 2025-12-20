@@ -49,6 +49,14 @@ export const en = {
     back: 'Back',
     next: 'Next',
     close: 'Close',
+    settings: 'Settings',
+    refresh: 'Refresh',
+    getFree: 'Get free key',
+    every: 'Every',
+    minutes: 'minutes',
+    perGram: 'per gram',
+    ratio: 'ratio',
+    lastUpdated: 'Last updated',
   },
 
   // Auth
@@ -119,6 +127,17 @@ export const en = {
     english: 'English',
     chinese: '中文',
     switchLanguage: 'Switch Language',
+  },
+
+  // Price Data
+  priceData: {
+    autoFetch: 'Automatic Price Fetching',
+    apiSettings: 'API Settings',
+    autoRefresh: 'Auto-refresh prices',
+    fetchedFrom: 'Fetched from',
+    noApiKey: 'No API key configured. Please add an API key in settings or enter prices manually below.',
+    freeRealtime: 'Free tier with real-time data',
+    freeTier: 'Free tier with daily updates',
   },
 };
 

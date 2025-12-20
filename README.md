@@ -49,6 +49,39 @@ PeiLing is a production-ready investment management tool designed to help you sy
 - **Default Language**: Chinese (中文) for China market, easily switchable to English
 - **Persistent Preference**: Language choice saved across sessions
 
+### 📡 Automatic Price Fetching
+
+- **Real-Time Price Data**: Automatically fetch gold and silver prices in CNY from trusted APIs
+- **Multiple API Support**:
+  - **MetalpriceAPI**: Free tier with real-time updates (recommended)
+  - **Metals-API**: Free tier with daily updates (backup)
+- **Auto-Refresh**: Configurable automatic price refresh (5/15/30/60 minute intervals)
+- **Smart Fallback**: Manual entry option if API is unavailable
+- **Timestamp Tracking**: Last updated time displayed for transparency
+- **API Key Management**: Configure keys via UI settings or environment variables
+- **CNY Conversion**: Automatic conversion from troy ounce to grams in Chinese Yuan
+- **Price Sources**: Integration with reputable sources:
+  - Shanghai Gold Exchange (SGE) data via API providers
+  - Bank of China and ICBC precious metals pricing
+  - ETF data (Huaan Gold ETF 518880, E Fund Gold ETF 159934)
+
+**Getting Started with Price Fetching:**
+1. Get a free API key from [MetalpriceAPI](https://metalpriceapi.com/) or [Metals-API](https://metals-api.com/)
+2. Click the settings icon in the "Automatic Price Fetching" section
+3. Enter your API key and enable auto-refresh if desired
+4. Click "Refresh" to fetch current prices
+5. Prices will automatically populate the price entry form
+
+**Alternative Setup (Environment Variables):**
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit .env and add your API keys
+VITE_METALPRICE_API_KEY=your_api_key_here
+VITE_METALS_API_KEY=your_backup_key_here
+```
+
 ### Investment Strategy
 
 **Capital Structure:**
@@ -161,8 +194,18 @@ npm run preview
    - Set RSI and GSR thresholds
    - Save settings
 
-2. **Add Price Data:**
+2. **Setup Automatic Price Fetching (Recommended):**
    - Go to the Price Data tab
+   - Click the settings icon in "Automatic Price Fetching" section
+   - Get a free API key from [MetalpriceAPI](https://metalpriceapi.com/) or [Metals-API](https://metals-api.com/)
+   - Enter your API key
+   - Enable auto-refresh if desired (optional)
+   - Click "Save Settings"
+   - Click "Refresh" to fetch current prices
+   - Gold and silver prices will automatically populate
+
+3. **Add Price Data (Manual Alternative):**
+   - If not using automatic fetching, manually enter prices below
    - Enter daily prices for gold, silver, and platinum (¥/gram)
    - Input RSI values (30-period recommended)
    - Optionally add VIX for volatility context
@@ -272,6 +315,7 @@ For accurate yuan-denominated precious metals pricing, use these reputable Chine
 - **Authentication**: Custom local authentication with encrypted passwords
 - **Internationalization**: Custom i18n implementation (English & Chinese)
 - **State Management**: React Context API
+- **Price Data APIs**: MetalpriceAPI & Metals-API for real-time precious metals pricing
 - **Data Storage**: localStorage with multi-user support
 - **Date Handling**: date-fns
 
