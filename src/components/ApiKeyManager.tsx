@@ -7,8 +7,10 @@ export default function ApiKeyManager() {
   const { t } = useLanguage();
   const [metalpriceKey, setMetalpriceKey] = useState('');
   const [metalsKey, setMetalsKey] = useState('');
+  const [deepseekKey, setDeepseekKey] = useState('');
   const [showMetalpriceKey, setShowMetalpriceKey] = useState(false);
   const [showMetalsKey, setShowMetalsKey] = useState(false);
+  const [showDeepseekKey, setShowDeepseekKey] = useState(false);
   const [saved, setSaved] = useState(false);
 
   // Load existing keys on mount
@@ -16,10 +18,11 @@ export default function ApiKeyManager() {
     const keys = getApiKeys();
     setMetalpriceKey(keys.metalpriceApiKey);
     setMetalsKey(keys.metalsApiKey);
+    setDeepseekKey(keys.deepseekApiKey);
   }, []);
 
   const handleSave = () => {
-    saveApiKeys(metalpriceKey, metalsKey);
+    saveApiKeys(metalpriceKey, metalsKey, deepseekKey);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -29,10 +32,11 @@ export default function ApiKeyManager() {
       clearApiKeys();
       setMetalpriceKey('');
       setMetalsKey('');
+      setDeepseekKey('');
     }
   };
 
-  const hasKeys = metalpriceKey || metalsKey;
+  const hasKeys = metalpriceKey || metalsKey || deepseekKey;
 
   return (
     <div className="space-y-6">
@@ -198,6 +202,74 @@ export default function ApiKeyManager() {
                 <span>{t.apiKeys?.keyConfigured || 'Key configured'}</span>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* DeepSeek AI */}
+      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h3 className="text-lg font-bold text-gray-900">DeepSeek AI</h3>
+              <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                AI Automation
+              </span>
+            </div>
+            <p className="text-sm text-gray-600">
+              AI-powered analysis, RSI calculation, market insights & investment recommendations
+            </p>
+          </div>
+          <a
+            href="https://platform.deepseek.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+          >
+            <span>{t.apiKeys?.getKey || 'Get Key'}</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        <div className="space-y-3">
+          <label className="block">
+            <span className="text-sm font-semibold text-gray-700 mb-2 block">
+              {t.apiKeys?.apiKey || 'API Key'}
+            </span>
+            <div className="relative">
+              <input
+                type={showDeepseekKey ? 'text' : 'password'}
+                value={deepseekKey}
+                onChange={(e) => setDeepseekKey(e.target.value)}
+                placeholder="Enter your DeepSeek API key"
+                className="w-full px-4 py-3 pr-12 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none font-mono text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => setShowDeepseekKey(!showDeepseekKey)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-500 hover:text-gray-700 rounded transition-colors"
+              >
+                {showDeepseekKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </label>
+
+          {deepseekKey && (
+            <div className="flex items-center gap-2 text-sm text-purple-600">
+              <CheckCircle className="w-4 h-4" />
+              <span>{t.apiKeys?.keyConfigured || 'Key configured'} - AI features enabled</span>
+            </div>
+          )}
+
+          <div className="bg-white rounded-lg p-3 border border-purple-100">
+            <p className="text-xs font-semibold text-purple-900 mb-1">🤖 AI Features:</p>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li>• Automatic RSI calculation from price history</li>
+              <li>• Market sentiment analysis & predictions</li>
+              <li>• Personalized investment recommendations</li>
+              <li>• Portfolio risk assessment</li>
+              <li>• Transaction pattern analysis</li>
+            </ul>
           </div>
         </div>
       </div>

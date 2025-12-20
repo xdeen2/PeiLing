@@ -492,6 +492,75 @@ export const en = {
     memberSince: 'Member since:',
     signOut: 'Sign out of your account',
   },
+
+  // AI Features
+  ai: {
+    insights: 'AI Insights',
+    poweredBy: 'Powered by DeepSeek AI',
+    refresh: 'Refresh AI Analysis',
+    refreshing: 'AI is analyzing your portfolio...',
+    pleaseWait: 'This may take a few moments',
+    error: 'AI Analysis Error',
+    noKey: 'AI Features Available',
+    noKeyMessage: 'Add your DeepSeek API key to unlock powerful AI-driven insights including market sentiment analysis, investment recommendations, and portfolio risk assessment.',
+    configure: 'Configure AI Features',
+
+    // Market Sentiment
+    marketSentiment: 'Market Sentiment Analysis',
+    sentiment: 'Sentiment',
+    confidence: 'Confidence',
+    bullish: 'BULLISH',
+    bearish: 'BEARISH',
+    neutral: 'NEUTRAL',
+    recommendations: 'AI Recommendations',
+
+    // Investment Recommendations
+    investmentRec: 'AI Investment Recommendations',
+    risk: 'Risk',
+    riskLow: 'LOW',
+    riskMedium: 'MEDIUM',
+    riskHigh: 'HIGH',
+    suggestedAllocation: 'Suggested Allocation',
+    reasoning: 'Reasoning',
+
+    // Risk Assessment
+    riskAssessment: 'Portfolio Risk Assessment',
+    riskScore: 'Risk Score',
+    riskLevel: 'Risk Level',
+    riskLevelLow: 'LOW RISK',
+    riskLevelModerate: 'MODERATE RISK',
+    riskLevelHigh: 'HIGH RISK',
+    riskLevelVeryHigh: 'VERY HIGH RISK',
+    riskFactors: 'Risk Factors',
+    mitigation: 'Mitigation Strategies',
+
+    // Entry Point Predictions
+    entryPredictions: 'AI Entry Point Predictions',
+    optimalBuying: 'Optimal buying opportunities powered by DeepSeek AI',
+    analyzing: 'AI is analyzing optimal entry points...',
+    recommendation: 'Recommendation',
+    buyNow: 'BUY NOW',
+    wait: 'WAIT',
+    targetPrice: 'Target Price',
+    timeframe: 'Timeframe',
+
+    // RSI Calculation
+    calculateRSI: 'AI Calculate RSI',
+    calculating: 'Calculating...',
+    rsiCalculated: 'RSI values calculated successfully',
+    rsiError: 'Failed to calculate RSI. Please check your API key and try again.',
+    rsiNeedData: 'Need at least 14 days of historical price data to calculate RSI.',
+    rsiNeedPrices: 'Please enter all metal prices first',
+
+    // Features List
+    features: 'AI Features',
+    feature1: 'Automatic RSI calculation from price history',
+    feature2: 'Market sentiment analysis & predictions',
+    feature3: 'Personalized investment recommendations',
+    feature4: 'Portfolio risk assessment',
+    feature5: 'Transaction pattern analysis',
+    feature6: 'AI predictions help identify optimal entry points based on price trends and technical analysis',
+  },
 };
 
 export type TranslationKeys = typeof en;

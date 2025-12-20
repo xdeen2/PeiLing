@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAIAnalysis } from '../hooks/useAIAnalysis';
 import {
   calculateHoldings,
   calculateMonthlyInvestment,
@@ -9,7 +10,8 @@ import {
   calculateGSR,
 } from '../utils/calculations';
 import { getCurrentDate } from '../utils/helpers';
-import { Calculator, Info } from 'lucide-react';
+import { Calculator, Info, Brain, TrendingUp, TrendingDown, RefreshCw } from 'lucide-react';
+import { getApiKeys } from '../services/priceService';
 
 interface MonthlyInvestmentCalculatorProps extends ReturnType<typeof useAppData> {}
 
@@ -21,6 +23,47 @@ export default function MonthlyInvestmentCalculator({
 
   const holdings = useMemo(() => calculateHoldings(data.transactions), [data.transactions]);
   const latestPrice = data.priceData[data.priceData.length - 1];
+
+  // AI Analysis
+  const aiAnalysis = useAIAnalysis(data);
+  const [hasDeepSeekKey, setHasDeepSeekKey] = useState(false);
+  const [goldEntry, setGoldEntry] = useState<any>(null);
+  const [silverEntry, setSilverEntry] = useState<any>(null);
+  const [platinumEntry, setPlatinumEntry] = useState<any>(null);
+
+  // Check if DeepSeek API key is configured
+  useEffect(() => {
+    const keys = getApiKeys();
+    setHasDeepSeekKey(!!keys.deepseekApiKey);
+  }, []);
+
+  // Predict optimal entry points when price data is available
+  useEffect(() => {
+    if (hasDeepSeekKey && data.priceData.length >= 14 && latestPrice) {
+      const predictEntries = async () => {
+        const [gold, silver, platinum] = await Promise.all([
+          aiAnalysis.predictEntry('gold'),
+          aiAnalysis.predictEntry('silver'),
+          aiAnalysis.predictEntry('platinum'),
+        ]);
+        setGoldEntry(gold);
+        setSilverEntry(silver);
+        setPlatinumEntry(platinum);
+      };
+      predictEntries();
+    }
+  }, [hasDeepSeekKey, data.priceData.length, latestPrice, aiAnalysis]);
+
+  const handleRefreshPredictions = async () => {
+    const [gold, silver, platinum] = await Promise.all([
+      aiAnalysis.predictEntry('gold'),
+      aiAnalysis.predictEntry('silver'),
+      aiAnalysis.predictEntry('platinum'),
+    ]);
+    setGoldEntry(gold);
+    setSilverEntry(silver);
+    setPlatinumEntry(platinum);
+  };
 
   const calculation = useMemo(() => {
     if (!latestPrice) return null;
@@ -250,6 +293,173 @@ export default function MonthlyInvestmentCalculator({
         </div>
       </div>
 
+      {/* AI Optimal Entry Predictions */}
+      {hasDeepSeekKey && (goldEntry || silverEntry || platinumEntry) && (
+        <div className="card bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <Brain className="w-6 h-6 text-purple-600" />
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">AI Entry Point Predictions</h3>
+                <p className="text-sm text-gray-600">Optimal buying opportunities powered by DeepSeek AI</p>
+              </div>
+            </div>
+            <button
+              onClick={handleRefreshPredictions}
+              disabled={aiAnalysis.loading}
+              className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${aiAnalysis.loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </button>
+          </div>
+
+          {aiAnalysis.loading ? (
+            <div className="text-center py-8">
+              <RefreshCw className="w-8 h-8 text-purple-600 animate-spin mx-auto mb-2" />
+              <p className="text-purple-900 text-sm">AI is analyzing optimal entry points...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Gold Entry Prediction */}
+              {goldEntry && (
+                <div className="bg-white rounded-lg p-4 border-2 border-yellow-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-bold text-gray-900">Gold</span>
+                    {goldEntry.shouldBuy ? (
+                      <TrendingUp className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <TrendingDown className="w-5 h-5 text-red-600" />
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-xs text-gray-600">Recommendation</p>
+                      <p className={`text-sm font-semibold ${goldEntry.shouldBuy ? 'text-green-700' : 'text-red-700'}`}>
+                        {goldEntry.shouldBuy ? 'BUY NOW' : 'WAIT'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Target Price</p>
+                      <p className="text-lg font-bold text-yellow-600">{formatCurrency(goldEntry.targetPrice)}/g</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Confidence</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-purple-600 h-2 rounded-full"
+                            style={{ width: `${goldEntry.confidence * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-xs font-medium">{(goldEntry.confidence * 100).toFixed(0)}%</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Timeframe</p>
+                      <p className="text-sm font-medium text-gray-700">{goldEntry.timeframe}</p>
+                    </div>
+                    <div className="pt-2 border-t border-gray-200">
+                      <p className="text-xs text-gray-700">{goldEntry.reasoning}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Silver Entry Prediction */}
+              {silverEntry && (
+                <div className="bg-white rounded-lg p-4 border-2 border-gray-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-bold text-gray-900">Silver</span>
+                    {silverEntry.shouldBuy ? (
+                      <TrendingUp className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <TrendingDown className="w-5 h-5 text-red-600" />
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-xs text-gray-600">Recommendation</p>
+                      <p className={`text-sm font-semibold ${silverEntry.shouldBuy ? 'text-green-700' : 'text-red-700'}`}>
+                        {silverEntry.shouldBuy ? 'BUY NOW' : 'WAIT'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Target Price</p>
+                      <p className="text-lg font-bold text-gray-600">{formatCurrency(silverEntry.targetPrice)}/g</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Confidence</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-purple-600 h-2 rounded-full"
+                            style={{ width: `${silverEntry.confidence * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-xs font-medium">{(silverEntry.confidence * 100).toFixed(0)}%</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Timeframe</p>
+                      <p className="text-sm font-medium text-gray-700">{silverEntry.timeframe}</p>
+                    </div>
+                    <div className="pt-2 border-t border-gray-200">
+                      <p className="text-xs text-gray-700">{silverEntry.reasoning}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Platinum Entry Prediction */}
+              {platinumEntry && (
+                <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-bold text-gray-900">Platinum</span>
+                    {platinumEntry.shouldBuy ? (
+                      <TrendingUp className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <TrendingDown className="w-5 h-5 text-red-600" />
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-xs text-gray-600">Recommendation</p>
+                      <p className={`text-sm font-semibold ${platinumEntry.shouldBuy ? 'text-green-700' : 'text-red-700'}`}>
+                        {platinumEntry.shouldBuy ? 'BUY NOW' : 'WAIT'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Target Price</p>
+                      <p className="text-lg font-bold text-gray-500">{formatCurrency(platinumEntry.targetPrice)}/g</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Confidence</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-purple-600 h-2 rounded-full"
+                            style={{ width: `${platinumEntry.confidence * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-xs font-medium">{(platinumEntry.confidence * 100).toFixed(0)}%</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Timeframe</p>
+                      <p className="text-sm font-medium text-gray-700">{platinumEntry.timeframe}</p>
+                    </div>
+                    <div className="pt-2 border-t border-gray-200">
+                      <p className="text-xs text-gray-700">{platinumEntry.reasoning}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Info Box */}
       <div className="card border-l-4 border-primary-500">
         <div className="flex gap-3">
@@ -261,6 +471,7 @@ export default function MonthlyInvestmentCalculator({
               <li>• RSI values adjust allocation: pause buying when overbought (&gt;70), increase when oversold (&lt;30)</li>
               <li>• Gold-Silver Ratio helps identify arbitrage opportunities between metals</li>
               <li>• Use the "Generate Orders" button to create tiered limit orders based on this allocation</li>
+              {hasDeepSeekKey && <li>• AI predictions help identify optimal entry points based on price trends and technical analysis</li>}
             </ul>
           </div>
         </div>
