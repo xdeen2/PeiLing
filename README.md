@@ -33,6 +33,22 @@ PeiLing is a production-ready investment management tool designed to help you sy
 - **💾 Data Management**: Export/import backups and CSV exports
 - **❓ Help Section**: Comprehensive educational resources
 
+### 🔐 User Management & Security
+
+- **Multi-User Support**: Multiple users can manage separate portfolios on the same device
+- **Secure Authentication**: Password-protected accounts with encrypted storage
+- **User Profiles**: Personalized settings and data isolation per user
+- **Password Management**: Change password functionality
+- **Session Management**: Secure login/logout with persistent sessions
+
+### 🌐 Internationalization
+
+- **Bilingual Support**: Full Chinese (Simplified) and English translations
+- **Language Toggle**: Seamless switching between languages
+- **Localized UI**: All interface elements, navigation, and messages translated
+- **Default Language**: Chinese (中文) for China market, easily switchable to English
+- **Persistent Preference**: Language choice saved across sessions
+
 ### Investment Strategy
 
 **Capital Structure:**
@@ -109,6 +125,31 @@ npm run preview
 ```
 
 ## 📖 User Guide
+
+### First Time Setup
+
+1. **Create Account:**
+   - Open the application
+   - Click "Register" on the login screen
+   - Enter username, email, and password (minimum 6 characters)
+   - Click "Create Account"
+   - You'll be automatically logged in
+
+   **Demo Credentials (for testing):**
+   - Username: `demo`
+   - Password: `demo123`
+
+2. **Login:**
+   - Enter your username and password
+   - Click "Sign In"
+   - Your portfolio data is isolated and secure
+   - Each user has completely separate data
+
+3. **Language Selection:**
+   - Click the language toggle button (🌐) in the header
+   - Switch between Chinese (中文) and English
+   - Language preference is saved automatically
+   - Default language is Chinese for China market
 
 ### Getting Started
 
@@ -228,7 +269,10 @@ For accurate yuan-denominated precious metals pricing, use these reputable Chine
 - **Styling**: Tailwind CSS
 - **Charts**: Recharts
 - **Icons**: Lucide React
-- **Data Storage**: localStorage
+- **Authentication**: Custom local authentication with encrypted passwords
+- **Internationalization**: Custom i18n implementation (English & Chinese)
+- **State Management**: React Context API
+- **Data Storage**: localStorage with multi-user support
 - **Date Handling**: date-fns
 
 ## 📊 Calculation Methodologies

@@ -1,6 +1,10 @@
 import { AppData, StrategyConfig } from '../types';
+import { authService } from '../auth/authService';
 
-const STORAGE_KEY = 'peiling-metals-data';
+function getStorageKey(): string {
+  const user = authService.getCurrentUser();
+  return user ? `peiling-metals-data-${user.username}` : 'peiling-metals-data-guest';
+}
 
 const defaultConfig: StrategyConfig = {
   totalCapital: 100000,
@@ -52,18 +56,20 @@ const defaultData: AppData = {
 export const storage = {
   load(): AppData {
     try {
-      const data = localStorage.getItem(STORAGE_KEY);
-      if (!data) return defaultData;
+      const key = getStorageKey();
+      const data = localStorage.getItem(key);
+      if (!data) return { ...defaultData };
       return JSON.parse(data);
     } catch (error) {
       console.error('Error loading data from localStorage:', error);
-      return defaultData;
+      return { ...defaultData };
     }
   },
 
   save(data: AppData): void {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      const key = getStorageKey();
+      localStorage.setItem(key, JSON.stringify(data));
     } catch (error) {
       console.error('Error saving data to localStorage:', error);
     }
