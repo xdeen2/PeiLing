@@ -138,6 +138,35 @@ export default function HelpSection() {
         </div>
       </div>
 
+      {/* Recommended Price Data Sources */}
+      <div className="card bg-primary-50 border-l-4 border-primary-500">
+        <h3 className="text-lg font-semibold mb-3">Recommended Price Data Sources (China)</h3>
+        <div className="space-y-3 text-sm text-gray-700">
+          <div>
+            <h4 className="font-semibold text-primary-700 mb-2">Official Exchanges</h4>
+            <ul className="ml-4 space-y-1">
+              <li>• <strong>Shanghai Gold Exchange (SGE)</strong> - Direct bullion trading, most authoritative prices</li>
+              <li>• <strong>Bank of China Precious Metals</strong> - Paper gold/silver accounts with daily quotes</li>
+              <li>• <strong>ICBC Precious Metals</strong> - Physical and paper options with real-time pricing</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold text-primary-700 mb-2">ETF Options</h4>
+            <ul className="ml-4 space-y-1">
+              <li>• <strong>Huaan Gold ETF (518880)</strong> - Tracks gold prices with high liquidity</li>
+              <li>• <strong>E Fund Gold ETF (159934)</strong> - Alternative gold tracking option</li>
+            </ul>
+          </div>
+          <div className="mt-3 p-3 bg-white rounded">
+            <p className="text-xs text-gray-600">
+              <strong>Tip:</strong> Use consistent sources for price data. SGE provides the most reliable yuan-denominated
+              precious metals prices. For RSI calculations, use 30-period RSI from trading platforms or calculate
+              from daily price data using technical analysis tools.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Best Practices */}
       <div className="card">
         <div className="flex items-start gap-3 mb-4">
@@ -145,7 +174,7 @@ export default function HelpSection() {
           <div>
             <h3 className="text-lg font-semibold mb-3">Best Practices</h3>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li>✓ Update price data daily or at least weekly for accurate calculations</li>
+              <li>✓ Update price data daily or at least weekly from reputable sources (SGE, BOC, ICBC)</li>
               <li>✓ Stick to the value averaging schedule - invest monthly without fail</li>
               <li>✓ Use tiered limit orders to improve average entry price</li>
               <li>✓ Monitor RSI to avoid buying when metals are overbought</li>

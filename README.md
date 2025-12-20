@@ -165,6 +165,50 @@ npm run preview
    - Review performance reports
    - Check rebalancing needs
 
+### Recommended Price Data Sources (China Market)
+
+For accurate yuan-denominated precious metals pricing, use these reputable Chinese sources:
+
+**Official Exchanges:**
+- **Shanghai Gold Exchange (SGE)** - Most authoritative source for direct bullion trading
+  - Provides real-time yuan/gram prices for gold, silver, and platinum
+  - Official benchmark for Chinese precious metals market
+  - Website: www.sge.com.cn
+
+- **Bank of China Precious Metals** - Paper gold/silver accounts
+  - Daily quotes for paper gold and silver
+  - Accessible through BOC online banking
+  - No physical delivery, pure price tracking
+
+- **ICBC Precious Metals** - Physical and paper options
+  - Real-time pricing for both physical and paper metals
+  - Available through ICBC mobile app and online banking
+  - Competitive spreads and liquidity
+
+**ETF Options:**
+- **Huaan Gold ETF (518880)** - Tracks physical gold prices
+  - High liquidity and low tracking error
+  - Traded on Shanghai Stock Exchange
+  - Easy to access through any Chinese brokerage
+
+- **E Fund Gold ETF (159934)** - Alternative gold tracking
+  - Similar to Huaan with slightly different structure
+  - Also tracks physical gold prices
+  - Good for diversification across ETF providers
+
+**For RSI Calculations:**
+- Use 30-period RSI calculated from daily closing prices
+- Most Chinese trading platforms (Tonghuashun, Futu, etc.) provide RSI indicators
+- Alternatively, calculate manually from 30 days of price data
+- RSI formula: RSI = 100 - (100 / (1 + RS)), where RS = Average Gain / Average Loss
+
+**Best Practices:**
+- Use consistent data source throughout your investment period
+- SGE provides the most reliable benchmark prices
+- Update prices during market hours (9:00-15:30 CST)
+- Cross-check prices across multiple sources for accuracy
+- Save source information with each price entry for audit trail
+
 ### Data Management
 
 **Export Backups:**

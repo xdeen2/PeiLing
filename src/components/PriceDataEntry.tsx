@@ -82,6 +82,18 @@ export default function PriceDataEntry({
         <p className="text-gray-600">Track daily prices and technical indicators for precious metals.</p>
       </div>
 
+      {/* Data Sources Info */}
+      <div className="card bg-blue-50 border-l-4 border-blue-500">
+        <h4 className="font-semibold text-blue-900 mb-2">📊 Recommended Price Data Sources</h4>
+        <div className="text-sm text-blue-800 space-y-1">
+          <p><strong>Official Exchanges:</strong> Shanghai Gold Exchange (SGE), Bank of China, ICBC Precious Metals</p>
+          <p><strong>ETF Platforms:</strong> Huaan Gold ETF (518880), E Fund Gold ETF (159934)</p>
+          <p className="text-xs text-blue-700 mt-2">
+            💡 Use SGE for most authoritative yuan-denominated prices. Calculate 30-period RSI from daily price data or use values from your trading platform.
+          </p>
+        </div>
+      </div>
+
       {/* Entry Form */}
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">
