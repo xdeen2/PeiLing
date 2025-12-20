@@ -64,7 +64,7 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-3xl font-bold text-primary-600">{data.transactions.length}</p>
-            <p className="text-sm text-gray-600 mt-1">Transactions</p>
+            <p className="text-sm text-gray-600 mt-1">{t.nav.transactions}</p>
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-3xl font-bold text-primary-600">{data.limitOrders.length}</p>
@@ -84,28 +84,28 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
           <div>
             <h4 className="font-medium mb-2">{ t.dataManagement.fullBackup}</h4>
             <p className="text-sm text-gray-600 mb-3">
-              Export all your data including settings, transactions, prices, and reports.
+              {t.dataManagement.fullBackupDesc}
             </p>
             <button onClick={handleExportJSON} className="btn btn-primary">
               <Download className="w-4 h-4 inline mr-2" />
-              Export Full Backup
+              {t.dataManagement.exportFullBackup}
             </button>
           </div>
 
           <div className="border-t pt-4">
             <h4 className="font-medium mb-2">{ t.dataManagement.csvExports}</h4>
             <p className="text-sm text-gray-600 mb-3">
-              Export specific data types as CSV for use in spreadsheets.
+              {t.dataManagement.csvExportsDesc}
             </p>
             <div className="flex flex-wrap gap-2">
               <button onClick={() => handleExportCSV('transactions')} className="btn btn-secondary">
-                Export Transactions
+                {t.dataManagement.exportTransactions}
               </button>
               <button onClick={() => handleExportCSV('priceData')} className="btn btn-secondary">
-                Export Price Data
+                {t.dataManagement.exportPriceData}
               </button>
               <button onClick={() => handleExportCSV('limitOrders')} className="btn btn-secondary">
-                Export Limit Orders
+                {t.dataManagement.exportLimitOrders}
               </button>
             </div>
           </div>
@@ -116,11 +116,11 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">{ t.dataManagement.importData}</h3>
         <p className="text-sm text-gray-600 mb-3">
-          Import a previously exported JSON backup file. This will replace all current data.
+          {t.dataManagement.importDataDesc}
         </p>
         <button onClick={handleImport} className="btn btn-primary">
           <Upload className="w-4 h-4 inline mr-2" />
-          Import from Backup
+          {t.dataManagement.importFromBackup}
         </button>
       </div>
 
@@ -128,11 +128,11 @@ export default function DataManagement({ data, importData, resetData }: ReturnTy
       <div className="card border-2 border-danger-500 bg-danger-50">
         <h3 className="text-lg font-semibold mb-4 text-danger-900">{ t.dataManagement.dangerZone}</h3>
         <p className="text-sm text-danger-800 mb-3">
-          Warning: This action will permanently delete all your data and cannot be undone.
+          {t.dataManagement.dangerZoneWarning}
         </p>
         <button onClick={handleReset} className="btn btn-danger">
           <Trash2 className="w-4 h-4 inline mr-2" />
-          Reset All Data
+          {t.dataManagement.resetAllData}
         </button>
       </div>
     </div>
