@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useAppData } from '../hooks/useAppData';
+import { useLanguage } from '../contexts/LanguageContext';
 import {
   calculateHoldings,
   calculatePortfolioValue,
@@ -15,6 +16,7 @@ import { TrendingUp, TrendingDown, AlertCircle, CheckCircle } from 'lucide-react
 interface DashboardProps extends ReturnType<typeof useAppData> {}
 
 export default function Dashboard({ data }: DashboardProps) {
+  const { t } = useLanguage();
   const latestPrice = data.priceData[data.priceData.length - 1];
   const holdings = useMemo(() => calculateHoldings(data.transactions), [data.transactions]);
 
@@ -50,9 +52,9 @@ export default function Dashboard({ data }: DashboardProps) {
   }, [holdings, latestPrice]);
 
   const allocationData = [
-    { name: 'Gold', value: currentAllocation.gold, target: data.config.targetAllocation.gold, color: '#FFD700' },
-    { name: 'Silver', value: currentAllocation.silver, target: data.config.targetAllocation.silver, color: '#C0C0C0' },
-    { name: 'Platinum', value: currentAllocation.platinum, target: data.config.targetAllocation.platinum, color: '#E5E4E2' },
+    { name: t.metals.gold, value: currentAllocation.gold, target: data.config.targetAllocation.gold, color: '#FFD700' },
+    { name: t.metals.silver, value: currentAllocation.silver, target: data.config.targetAllocation.silver, color: '#C0C0C0' },
+    { name: t.metals.platinum, value: currentAllocation.platinum, target: data.config.targetAllocation.platinum, color: '#E5E4E2' },
   ];
 
   const unreadAlerts = data.alerts.filter(a => !a.read);
@@ -64,20 +66,20 @@ export default function Dashboard({ data }: DashboardProps) {
     <div className="space-y-6">
       {/* Portfolio Summary */}
       <div>
-        <h2 className="text-2xl font-bold mb-4">Portfolio Summary</h2>
+        <h2 className="text-2xl font-bold mb-4">{t.dashboard.portfolioSummary}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="stat-card">
-            <p className="stat-label">Current Total Value</p>
+            <p className="stat-label">{t.dashboard.currentValue}</p>
             <p className="stat-value text-primary-600">{formatCurrency(currentValue)}</p>
           </div>
 
           <div className="stat-card">
-            <p className="stat-label">Total Invested</p>
+            <p className="stat-label">{t.dashboard.totalInvested}</p>
             <p className="stat-value">{formatCurrency(totalInvested)}</p>
           </div>
 
           <div className="stat-card">
-            <p className="stat-label">Unrealized Gain/Loss</p>
+            <p className="stat-label">{t.dashboard.unrealizedGain}</p>
             <div className="flex items-center gap-2">
               <p className={`stat-value ${unrealizedGain >= 0 ? 'text-success-600' : 'text-danger-600'}`}>
                 {formatCurrency(unrealizedGain)}
@@ -94,16 +96,16 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
 
           <div className="stat-card">
-            <p className="stat-label">Days Remaining</p>
+            <p className="stat-label">{t.dashboard.daysRemaining}</p>
             <p className="stat-value">{daysRemaining}</p>
-            <p className="text-sm text-gray-600">Until accumulation ends</p>
+            <p className="text-sm text-gray-600">{t.dashboard.untilAccumulationEnds}</p>
           </div>
         </div>
       </div>
 
       {/* Investment Progress */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Investment Progress</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.dashboard.investmentProgress}</h3>
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>
@@ -120,7 +122,7 @@ export default function Dashboard({ data }: DashboardProps) {
       {/* Allocation Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Current Allocation</h3>
+          <h3 className="text-lg font-semibold mb-4">{t.dashboard.currentAllocation}</h3>
           {currentValue > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -144,14 +146,14 @@ export default function Dashboard({ data }: DashboardProps) {
             </ResponsiveContainer>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-gray-500">
-              No holdings yet. Start investing to see your allocation.
+              {t.dashboard.noHoldings}
             </div>
           )}
         </div>
 
         {/* Allocation vs Target */}
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Allocation vs Target</h3>
+          <h3 className="text-lg font-semibold mb-4">{t.dashboard.allocationVsTarget}</h3>
           <div className="space-y-4">
             {allocationData.map(item => {
               const deviation = item.value - item.target;
@@ -192,8 +194,8 @@ export default function Dashboard({ data }: DashboardProps) {
                   </div>
                   {!isOnTarget && (
                     <p className="text-xs text-gray-600 mt-1">
-                      Deviation: {deviation > 0 ? '+' : ''}
-                      {formatPercentage(deviation, 1)} from target
+                      {t.dashboard.deviation}: {deviation > 0 ? '+' : ''}
+                      {formatPercentage(deviation, 1)} {t.dashboard.fromTarget}
                     </p>
                   )}
                 </div>
@@ -208,7 +210,7 @@ export default function Dashboard({ data }: DashboardProps) {
         <div className="card border-l-4 border-warning-500">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-warning-600" />
-            Active Alerts ({unreadAlerts.length})
+            {t.dashboard.activeAlerts} ({unreadAlerts.length})
           </h3>
           <div className="space-y-2">
             {criticalAlerts.slice(0, 5).map(alert => (
@@ -222,7 +224,7 @@ export default function Dashboard({ data }: DashboardProps) {
             ))}
             {unreadAlerts.length > 5 && (
               <p className="text-sm text-gray-600 text-center pt-2">
-                +{unreadAlerts.length - 5} more alerts
+                +{unreadAlerts.length - 5} {t.dashboard.moreAlerts}
               </p>
             )}
           </div>
@@ -231,24 +233,24 @@ export default function Dashboard({ data }: DashboardProps) {
 
       {/* Quick Stats */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Quick Stats</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.dashboard.quickStats}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Total Transactions</p>
+            <p className="text-sm text-gray-600">{t.dashboard.totalTransactions}</p>
             <p className="text-xl font-bold">{data.transactions.length}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Pending Orders</p>
+            <p className="text-sm text-gray-600">{t.dashboard.pendingOrders}</p>
             <p className="text-xl font-bold">
               {data.limitOrders.filter(o => o.status === 'pending').length}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Price Data Points</p>
+            <p className="text-sm text-gray-600">{t.dashboard.priceDataPoints}</p>
             <p className="text-xl font-bold">{data.priceData.length}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Monthly Reports</p>
+            <p className="text-sm text-gray-600">{t.dashboard.monthlyReports}</p>
             <p className="text-xl font-bold">{data.monthlyReports.length}</p>
           </div>
         </div>
