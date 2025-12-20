@@ -3,10 +3,12 @@ import { useAppData } from '../hooks/useAppData';
 import { calculateHoldings, calculatePortfolioValue, formatCurrency, formatGrams, formatPercentage } from '../utils/calculations';
 import { Wallet } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface PortfolioHoldingsProps extends ReturnType<typeof useAppData> {}
 
 export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
+  const { t } = useLanguage();
   const holdings = useMemo(() => calculateHoldings(data.transactions), [data.transactions]);
   const latestPrice = data.priceData[data.priceData.length - 1];
 
@@ -26,7 +28,7 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
 
   const metalData = [
     {
-      metal: 'Gold',
+      metal: t.metals.gold,
       quantity: holdings.gold.quantity,
       avgCost: holdings.gold.averageCost,
       currentPrice: latestPrice?.goldPrice || 0,
@@ -34,7 +36,7 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
       color: 'bg-yellow-400',
     },
     {
-      metal: 'Silver',
+      metal: t.metals.silver,
       quantity: holdings.silver.quantity,
       avgCost: holdings.silver.averageCost,
       currentPrice: latestPrice?.silverPrice || 0,
@@ -42,7 +44,7 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
       color: 'bg-gray-400',
     },
     {
-      metal: 'Platinum',
+      metal: t.metals.platinum,
       quantity: holdings.platinum.quantity,
       avgCost: holdings.platinum.averageCost,
       currentPrice: latestPrice?.platinumPrice || 0,
@@ -54,24 +56,24 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Portfolio Holdings & Valuation</h2>
-        <p className="text-gray-600">Track your current holdings and their market value.</p>
+        <h2 className="text-2xl font-bold mb-4">{t.portfolio.title}</h2>
+        <p className="text-gray-600">{t.portfolio.subtitle}</p>
       </div>
 
       {/* Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="stat-card">
-          <p className="stat-label">Total Portfolio Value</p>
+          <p className="stat-label">{t.portfolio.totalPortfolioValue}</p>
           <p className="stat-value text-primary-600">{formatCurrency(currentValue)}</p>
         </div>
         <div className="stat-card">
-          <p className="stat-label">Total Cost Basis</p>
+          <p className="stat-label">{t.portfolio.totalCostBasis}</p>
           <p className="stat-value">
             {formatCurrency(holdings.gold.totalCost + holdings.silver.totalCost + holdings.platinum.totalCost)}
           </p>
         </div>
         <div className="stat-card">
-          <p className="stat-label">Unrealized Gain/Loss</p>
+          <p className="stat-label">{t.portfolio.unrealizedGainLoss}</p>
           <p className={`stat-value ${currentValue >= (holdings.gold.totalCost + holdings.silver.totalCost + holdings.platinum.totalCost) ? 'text-success-600' : 'text-danger-600'}`}>
             {formatCurrency(currentValue - (holdings.gold.totalCost + holdings.silver.totalCost + holdings.platinum.totalCost))}
           </p>
@@ -80,19 +82,19 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
 
       {/* Holdings Table */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Current Holdings</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.portfolio.currentHoldings}</h3>
         {currentValue > 0 ? (
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Metal</th>
-                  <th>Quantity</th>
-                  <th>Avg Cost</th>
-                  <th>Current Price</th>
-                  <th>Current Value</th>
-                  <th>Unrealized P/L</th>
-                  <th>Allocation</th>
+                  <th>{t.limitOrders.metal}</th>
+                  <th>{t.common.quantity}</th>
+                  <th>{t.portfolio.avgCost}</th>
+                  <th>{t.common.price}</th>
+                  <th>{t.portfolio.currentValue}</th>
+                  <th>{t.portfolio.unrealizedPL}</th>
+                  <th>{t.portfolio.allocation}</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +128,7 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
         ) : (
           <div className="text-center py-12 text-gray-500">
             <Wallet className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p>No holdings yet. Start investing to build your portfolio.</p>
+            <p>{t.portfolio.noHoldings}</p>
           </div>
         )}
       </div>
@@ -134,7 +136,7 @@ export default function PortfolioHoldings({ data }: PortfolioHoldingsProps) {
       {/* Portfolio Value Chart */}
       {portfolioHistory.length > 0 && currentValue > 0 && (
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Portfolio Value History (Last 30 Days, in k¥)</h3>
+          <h3 className="text-lg font-semibold mb-4">{t.portfolio.portfolioValueHistory}</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={portfolioHistory}>
               <CartesianGrid strokeDasharray="3 3" />

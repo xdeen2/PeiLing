@@ -2,8 +2,10 @@ import { useMemo } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import { calculateHoldings, calculateRebalancing, formatCurrency, formatGrams, formatPercentage } from '../utils/calculations';
 import { RefreshCw } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function RebalancingTool({ data }: ReturnType<typeof useAppData>) {
+  const { t } = useLanguage();
   const holdings = useMemo(() => calculateHoldings(data.transactions), [data.transactions]);
   const latestPrice = data.priceData[data.priceData.length - 1];
 
@@ -22,7 +24,7 @@ export default function RebalancingTool({ data }: ReturnType<typeof useAppData>)
     return (
       <div className="card text-center py-12">
         <RefreshCw className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-600">Add price data and holdings to use rebalancing tool.</p>
+        <p className="text-gray-600">{t.rebalancing.noPriceData}</p>
       </div>
     );
   }
@@ -30,30 +32,30 @@ export default function RebalancingTool({ data }: ReturnType<typeof useAppData>)
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Rebalancing Tool</h2>
-        <p className="text-gray-600">Monitor allocation drift and rebalance when deviation exceeds 15%.</p>
+        <h2 className="text-2xl font-bold mb-4">{t.rebalancing.title}</h2>
+        <p className="text-gray-600">{t.rebalancing.subtitle}</p>
       </div>
 
       {/* Status */}
       <div className={`card border-l-4 ${rebalancing.needed ? 'border-warning-500 bg-warning-50' : 'border-success-500 bg-success-50'}`}>
         <h3 className="text-lg font-semibold mb-2">
-          {rebalancing.needed ? '⚠ Rebalancing Recommended' : '✓ Portfolio is Balanced'}
+          {rebalancing.needed ? t.rebalancing.rebalancingRecommended : t.rebalancing.portfolioBalanced}
         </h3>
         <p className="text-sm text-gray-700">
           {rebalancing.needed
-            ? 'Your portfolio allocation has deviated more than 15% from target.'
-            : 'Your portfolio allocation is within acceptable range.'}
+            ? t.rebalancing.deviationExceeded
+            : t.rebalancing.withinRange}
         </p>
       </div>
 
       {/* Allocation Comparison */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Current vs Target Allocation</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.rebalancing.currentVsTarget}</h3>
         <div className="space-y-4">
           {(['gold', 'silver', 'platinum'] as const).map(metal => (
             <div key={metal}>
               <div className="flex justify-between items-center mb-2">
-                <span className="font-medium capitalize">{metal}</span>
+                <span className="font-medium capitalize">{t.metals[metal]}</span>
                 <div className="text-sm">
                   <span>{formatPercentage(rebalancing.currentAllocation[metal], 1)}</span>
                   <span className="text-gray-500 mx-2">/</span>
@@ -77,12 +79,12 @@ export default function RebalancingTool({ data }: ReturnType<typeof useAppData>)
       {/* Rebalancing Trades */}
       {rebalancing.needed && rebalancing.trades && (
         <div className="card bg-primary-50">
-          <h3 className="text-lg font-semibold mb-4">Recommended Trades</h3>
+          <h3 className="text-lg font-semibold mb-4">{t.rebalancing.recommendedTrades}</h3>
           <div className="space-y-4">
             {rebalancing.trades.sell && (
               <div className="p-4 bg-danger-100 rounded-lg">
-                <p className="text-sm text-gray-700 mb-2">Sell (Overweight)</p>
-                <p className="text-xl font-bold capitalize">{rebalancing.trades.sell.metal}</p>
+                <p className="text-sm text-gray-700 mb-2">{t.rebalancing.sellOverweight}</p>
+                <p className="text-xl font-bold capitalize">{t.metals[rebalancing.trades.sell.metal as keyof typeof t.metals]}</p>
                 <p className="text-lg">{formatCurrency(rebalancing.trades.sell.amount)}</p>
                 <p className="text-sm text-gray-600">{formatGrams(rebalancing.trades.sell.quantity)}</p>
               </div>
@@ -92,8 +94,8 @@ export default function RebalancingTool({ data }: ReturnType<typeof useAppData>)
             </div>
             {rebalancing.trades.buy && (
               <div className="p-4 bg-success-100 rounded-lg">
-                <p className="text-sm text-gray-700 mb-2">Buy (Underweight)</p>
-                <p className="text-xl font-bold capitalize">{rebalancing.trades.buy.metal}</p>
+                <p className="text-sm text-gray-700 mb-2">{t.rebalancing.buyUnderweight}</p>
+                <p className="text-xl font-bold capitalize">{t.metals[rebalancing.trades.buy.metal as keyof typeof t.metals]}</p>
                 <p className="text-lg">{formatCurrency(rebalancing.trades.buy.amount)}</p>
                 <p className="text-sm text-gray-600">{formatGrams(rebalancing.trades.buy.quantity)}</p>
               </div>
