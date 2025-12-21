@@ -15,19 +15,19 @@ export default function HelpSection() {
         <div className="flex items-start gap-3 mb-4">
           <BookOpen className="w-6 h-6 text-primary-600 flex-shrink-0" />
           <div>
-            <h3 className="text-lg font-semibold mb-2">Investment Strategy Overview</h3>
+            <h3 className="text-lg font-semibold mb-2">{t.help.strategyOverview}</h3>
             <div className="space-y-3 text-gray-700">
               <p>
-                <strong>Total Capital:</strong> ¥100,000 over 6 months accumulation period
+                <strong>{t.help.totalCapital}:</strong> {t.help.totalCapitalValue}
               </p>
               <p>
-                <strong>Asset Allocation:</strong> Gold 50%, Silver 35%, Platinum 15%
+                <strong>{t.help.assetAllocation}:</strong> {t.help.assetAllocationValue}
               </p>
               <p>
-                <strong>Capital Split:</strong> Active 85% (¥85,000), Opportunity 15% (¥15,000)
+                <strong>{t.help.capitalSplit}:</strong> {t.help.capitalSplitValue}
               </p>
               <p>
-                <strong>Holding Period:</strong> Minimum 3 years for optimal returns
+                <strong>{t.help.holdingPeriod}:</strong> {t.help.holdingPeriodValue}
               </p>
             </div>
           </div>
@@ -36,72 +36,71 @@ export default function HelpSection() {
 
       {/* Key Concepts */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Key Concepts & Glossary</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.help.keyConcepts}</h3>
         <div className="space-y-4">
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">Value Averaging</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.valueAveraging}</h4>
             <p className="text-sm text-gray-700">
-              A disciplined investment strategy where you invest more when prices are low and less when prices are high.
-              Monthly investment = Target portfolio value - Current market value
+              {t.help.valueAveragingDesc}
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">RSI (Relative Strength Index)</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.rsi}</h4>
             <p className="text-sm text-gray-700">
-              A momentum indicator measuring overbought/oversold conditions (0-100 scale):
+              {t.help.rsiDesc}
             </p>
             <ul className="text-sm text-gray-700 ml-4 mt-1 space-y-1">
-              <li>• <strong>RSI &gt; 70:</strong> Overbought - pause buying</li>
-              <li>• <strong>RSI 50-70:</strong> Reduce to 50% allocation</li>
-              <li>• <strong>RSI 30-50:</strong> Normal - 100% allocation</li>
-              <li>• <strong>RSI &lt; 30:</strong> Oversold - aggressive buying at 150%</li>
+              <li>• {t.help.rsiOverbought}</li>
+              <li>• {t.help.rsiReduce}</li>
+              <li>• {t.help.rsiNormal}</li>
+              <li>• {t.help.rsiOversold}</li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">Gold-Silver Ratio (GSR)</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.gsr}</h4>
             <p className="text-sm text-gray-700">
-              The price of gold divided by the price of silver. Historical average is 65-75:
+              {t.help.gsrDesc}
             </p>
             <ul className="text-sm text-gray-700 ml-4 mt-1 space-y-1">
-              <li>• <strong>GSR &gt; 85:</strong> Silver is undervalued - buy more silver</li>
-              <li>• <strong>GSR &lt; 55:</strong> Gold is undervalued - buy more gold</li>
-              <li>• <strong>GSR 65-75:</strong> Normal range - follow standard allocation</li>
+              <li>• {t.help.gsrSilverCheap}</li>
+              <li>• {t.help.gsrGoldCheap}</li>
+              <li>• {t.help.gsrNormal}</li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">Tiered Limit Orders</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.tieredLimitOrders}</h4>
             <p className="text-sm text-gray-700">
-              Divide monthly allocation into 4 orders at different price levels to catch price dips:
+              {t.help.tieredLimitOrdersDesc}
             </p>
             <ul className="text-sm text-gray-700 ml-4 mt-1 space-y-1">
-              <li>• <strong>Tier 1:</strong> 40% of allocation at smallest discount</li>
-              <li>• <strong>Tier 2:</strong> 30% at medium discount</li>
-              <li>• <strong>Tier 3:</strong> 20% at larger discount</li>
-              <li>• <strong>Tier 4:</strong> 10% at deepest discount</li>
+              <li>• {t.help.tier1}</li>
+              <li>• {t.help.tier2}</li>
+              <li>• {t.help.tier3}</li>
+              <li>• {t.help.tier4}</li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">Dynamic Stop-Loss</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.dynamicStopLoss}</h4>
             <p className="text-sm text-gray-700">
-              Automatically adjusts based on market volatility: Average Cost - (30-day volatility × 2.5 × 20 days)
+              {t.help.dynamicStopLossDesc}
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">Sharpe Ratio</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.sharpeRatio}</h4>
             <p className="text-sm text-gray-700">
-              Risk-adjusted return metric. Higher is better. Above 1.0 is good, above 2.0 is excellent.
+              {t.help.sharpeRatioDesc}
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold text-primary-600 mb-1">Maximum Drawdown</h4>
+            <h4 className="font-semibold text-primary-600 mb-1">{t.help.maxDrawdown}</h4>
             <p className="text-sm text-gray-700">
-              Largest peak-to-trough decline in portfolio value. Indicates worst-case loss scenario.
+              {t.help.maxDrawdownDesc}
             </p>
           </div>
         </div>
@@ -112,29 +111,15 @@ export default function HelpSection() {
         <div className="flex items-start gap-3 mb-4">
           <Calculator className="w-6 h-6 text-primary-600 flex-shrink-0" />
           <div>
-            <h3 className="text-lg font-semibold mb-3">How to Use PeiLing</h3>
+            <h3 className="text-lg font-semibold mb-3">{t.help.howToUse}</h3>
             <ol className="space-y-3 text-sm text-gray-700">
-              <li>
-                <strong>1. Configure Settings:</strong> Go to Settings and set your total capital, start date, and allocation preferences.
-              </li>
-              <li>
-                <strong>2. Add Price Data:</strong> Regularly update gold, silver, and platinum prices with RSI values in the Price Data section.
-              </li>
-              <li>
-                <strong>3. Calculate Monthly Investment:</strong> Use the Investment Calculator to determine how much to invest based on value averaging.
-              </li>
-              <li>
-                <strong>4. Generate Orders:</strong> Create tiered limit orders based on the calculated allocation.
-              </li>
-              <li>
-                <strong>5. Record Transactions:</strong> Log all purchases and sales in the Transaction Log.
-              </li>
-              <li>
-                <strong>6. Monitor Portfolio:</strong> Track holdings, stop-loss levels, and rebalancing needs regularly.
-              </li>
-              <li>
-                <strong>7. Review Performance:</strong> Analyze monthly and quarterly reports to assess strategy effectiveness.
-              </li>
+              <li>{t.help.step1}</li>
+              <li>{t.help.step2}</li>
+              <li>{t.help.step3}</li>
+              <li>{t.help.step4}</li>
+              <li>{t.help.step5}</li>
+              <li>{t.help.step6}</li>
+              <li>{t.help.step7}</li>
             </ol>
           </div>
         </div>
@@ -142,28 +127,26 @@ export default function HelpSection() {
 
       {/* Recommended Price Data Sources */}
       <div className="card bg-primary-50 border-l-4 border-primary-500">
-        <h3 className="text-lg font-semibold mb-3">Recommended Price Data Sources (China)</h3>
+        <h3 className="text-lg font-semibold mb-3">{t.help.recommendedSources}</h3>
         <div className="space-y-3 text-sm text-gray-700">
           <div>
-            <h4 className="font-semibold text-primary-700 mb-2">Official Exchanges</h4>
+            <h4 className="font-semibold text-primary-700 mb-2">{t.help.officialExchanges}</h4>
             <ul className="ml-4 space-y-1">
-              <li>• <strong>Shanghai Gold Exchange (SGE)</strong> - Direct bullion trading, most authoritative prices</li>
-              <li>• <strong>Bank of China Precious Metals</strong> - Paper gold/silver accounts with daily quotes</li>
-              <li>• <strong>ICBC Precious Metals</strong> - Physical and paper options with real-time pricing</li>
+              <li>• {t.help.sge}</li>
+              <li>• {t.help.boc}</li>
+              <li>• {t.help.icbc}</li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-primary-700 mb-2">ETF Options</h4>
+            <h4 className="font-semibold text-primary-700 mb-2">{t.help.etfOptions}</h4>
             <ul className="ml-4 space-y-1">
-              <li>• <strong>Huaan Gold ETF (518880)</strong> - Tracks gold prices with high liquidity</li>
-              <li>• <strong>E Fund Gold ETF (159934)</strong> - Alternative gold tracking option</li>
+              <li>• {t.help.huaan}</li>
+              <li>• {t.help.efund}</li>
             </ul>
           </div>
           <div className="mt-3 p-3 bg-white rounded">
             <p className="text-xs text-gray-600">
-              <strong>Tip:</strong> Use consistent sources for price data. SGE provides the most reliable yuan-denominated
-              precious metals prices. For RSI calculations, use 30-period RSI from trading platforms or calculate
-              from daily price data using technical analysis tools.
+              {t.help.sourceTip}
             </p>
           </div>
         </div>
@@ -174,17 +157,17 @@ export default function HelpSection() {
         <div className="flex items-start gap-3 mb-4">
           <TrendingUp className="w-6 h-6 text-primary-600 flex-shrink-0" />
           <div>
-            <h3 className="text-lg font-semibold mb-3">Best Practices</h3>
+            <h3 className="text-lg font-semibold mb-3">{t.help.bestPractices}</h3>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li>✓ Update price data daily or at least weekly from reputable sources (SGE, BOC, ICBC)</li>
-              <li>✓ Stick to the value averaging schedule - invest monthly without fail</li>
-              <li>✓ Use tiered limit orders to improve average entry price</li>
-              <li>✓ Monitor RSI to avoid buying when metals are overbought</li>
-              <li>✓ Rebalance when allocation deviates more than 15% from target</li>
-              <li>✓ Respect stop-loss levels to limit downside risk</li>
-              <li>✓ Export data backups regularly to prevent data loss</li>
-              <li>✓ Review performance monthly and adjust strategy as needed</li>
-              <li>✓ Maintain discipline - avoid emotional buying or selling</li>
+              <li>{t.help.practice1}</li>
+              <li>{t.help.practice2}</li>
+              <li>{t.help.practice3}</li>
+              <li>{t.help.practice4}</li>
+              <li>{t.help.practice5}</li>
+              <li>{t.help.practice6}</li>
+              <li>{t.help.practice7}</li>
+              <li>{t.help.practice8}</li>
+              <li>{t.help.practice9}</li>
             </ul>
           </div>
         </div>
@@ -192,30 +175,30 @@ export default function HelpSection() {
 
       {/* FAQ */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.help.faq}</h3>
         <div className="space-y-4">
           <div>
-            <h4 className="font-medium text-gray-900 mb-1">Q: How is the monthly investment amount calculated?</h4>
+            <h4 className="font-medium text-gray-900 mb-1">{t.help.faqQ1}</h4>
             <p className="text-sm text-gray-700">
-              A: Using value averaging: (Months passed / 6) × Total Capital - Current Portfolio Value = Required Investment
+              {t.help.faqA1}
             </p>
           </div>
           <div>
-            <h4 className="font-medium text-gray-900 mb-1">Q: What if my RSI values show I should pause buying?</h4>
+            <h4 className="font-medium text-gray-900 mb-1">{t.help.faqQ2}</h4>
             <p className="text-sm text-gray-700">
-              A: Hold the cash for that month's allocation and deploy it when RSI drops to more favorable levels.
+              {t.help.faqA2}
             </p>
           </div>
           <div>
-            <h4 className="font-medium text-gray-900 mb-1">Q: When should I rebalance my portfolio?</h4>
+            <h4 className="font-medium text-gray-900 mb-1">{t.help.faqQ3}</h4>
             <p className="text-sm text-gray-700">
-              A: Rebalance when any metal's allocation deviates more than 15 percentage points from the target, or when GSR indicates extreme valuations.
+              {t.help.faqA3}
             </p>
           </div>
           <div>
-            <h4 className="font-medium text-gray-900 mb-1">Q: Is my data secure?</h4>
+            <h4 className="font-medium text-gray-900 mb-1">{t.help.faqQ4}</h4>
             <p className="text-sm text-gray-700">
-              A: All data is stored locally in your browser's localStorage. Nothing is transmitted to any server. Export backups regularly for safety.
+              {t.help.faqA4}
             </p>
           </div>
         </div>
